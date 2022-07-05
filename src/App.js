@@ -1,9 +1,9 @@
 import "./App.css";
 import "./styles.css";
-import React, { useRef, useEffect, useState } from "react";
-import { FiSettings } from "react-icons/fi";
-import { MdLiveHelp } from "react-icons/md";
-import canvasCreator from "./Clock";
+import React, { useState } from "react";
+import CanvasCreator from "./Clock";
+import Settings from "./Settings";
+import Help from "./Help";
 function App() {
   const [time, setTime] = useState({ hr: "00", min: "25", sec: "00" });
   const [breakTime, setBreakTime] = useState({
@@ -11,8 +11,22 @@ function App() {
     min: "15",
     sec: "00",
   });
+  const [test, setTest] = useState({
+    hr0: 0,
+    hr1: 0,
+    min0: 1,
+    min1: 5,
+    sec0: 0,
+    sec1: 0,
+  });
   const [isBreak, setIsBreak] = useState(false);
-  const [isPause, setIsPause] = useState(false);
+  const [isPause, setIsPause] = useState(true);
+  const handleBreakChange = () => {
+    if (window.confirm("You sure you want to skip the session?")) {
+      setIsBreak(!isBreak);
+      localStorage.setItem("elaspedTime", 0);
+    }
+  };
   // const handleChange = (e, setMethod, method, element) => {
   //   setMethod((prevValue) => ({
   //     ...prevValue,
@@ -22,96 +36,26 @@ function App() {
   return (
     <>
       <main className="relative bg-teal h-[100vh] w-full grid grid-rows-[10%_auto_10%]">
-        <nav className="flex justify-end">
-          <div className="settings-wrapper">
-            <FiSettings />
-            <section className="settings-options-wrapper absolute left-0">
-              <form action="" onSubmit={(e) => e.preventDefault()}>
-                <input
-                  type="number"
-                  name="hr"
-                  id="id"
-                  value={time.hr}
-                  // onChange={(e) => handleChange(e, setTime, time, "hr")}
-                  onChange={(e) => {
-                    setTime((prevTime) => ({
-                      ...prevTime,
-                      hr: e.target.value,
-                    }));
-                  }}
-                />
-                <input
-                  type="number"
-                  name="min"
-                  id="min"
-                  value={time.min}
-                  onChange={(e) => {
-                    setTime((prevTime) => ({
-                      ...prevTime,
-                      min: e.target.value,
-                    }));
-                  }}
-                />
-                <input
-                  type="number"
-                  name="sec"
-                  id="sec"
-                  value={time.sec}
-                  onChange={(e) => {
-                    setTime((prevTime) => ({
-                      ...prevTime,
-                      sec: e.target.value,
-                    }));
-                  }}
-                />
-              </form>
-              <form action="" onSubmit={(e) => e.preventDefault()}>
-                <input
-                  type="number"
-                  name="break-hr"
-                  id="break-hr"
-                  value={breakTime.hr}
-                  onChange={(e) => {
-                    setBreakTime((prevBreak) => ({
-                      ...prevBreak,
-                      hr: e.target.value,
-                    }));
-                  }}
-                />
-                <input
-                  type="number"
-                  name="break-min"
-                  id="break-min"
-                  value={breakTime.min}
-                  onChange={(e) => {
-                    setBreakTime((prevBreak) => ({
-                      ...prevBreak,
-                      min: e.target.value,
-                    }));
-                  }}
-                />
-                <input
-                  type="number"
-                  name="break-sec"
-                  id="break-sec"
-                  value={breakTime.sec}
-                  onChange={(e) => {
-                    setBreakTime((prevBreak) => ({
-                      ...prevBreak,
-                      sec: e.target.value,
-                    }));
-                  }}
-                />
-              </form>
-            </section>
-          </div>
-          <div className="help-wrapper">
-            <MdLiveHelp />
-          </div>
+        <nav className="flex justify-end pr-4 pt-3 gap-4">
+          <Settings
+            time={time}
+            setTime={setTime}
+            breakTime={breakTime}
+            setBreakTime={setBreakTime}
+            test={test}
+            setTest={setTest}
+          />
+          <Help />
         </nav>
         <div className="clock-section relative grid place-items-center overflow-hidden">
           <div className="clock-circle-wrapper grid place-items-center">
-            {canvasCreator(time,breakTime,isBreak,isPause)}
+            <CanvasCreator
+              time={time}
+              breakTime={breakTime}
+              isBreak={isBreak}
+              isPause={isPause}
+              setIsPause={setIsPause}
+            />
           </div>
           <div className="clock-info-wrapper absolute left-1/2 top-1/2 h-1/2 grid place-items-center transform -translate-x-1/2 -translate-y-1/2">
             <div className="title-section">
@@ -121,13 +65,17 @@ function App() {
               <span className="hr">00</span>:<span className="min">17</span>:
               <span className="sec">17</span>
             </section>
-            <section className="button-display">
-              <button className="pause" onClick={()=>setIsPause(!isPause)}>Pause</button>
-              <button className="skip" onClick={()=>setIsBreak(!isBreak)}>Skip</button>
+            <section className="button-display flex gap-5">
+              <button className="pause" onClick={() => setIsPause(!isPause)}>
+                {isPause ? `Resume` : "Pause"}
+              </button>
+              <button className="skip" onClick={handleBreakChange}>
+                Skip
+              </button>
             </section>
           </div>
         </div>
-        <div className="spotify-section"></div>
+        <div className="spotify-section flex justify-center align-middle"></div>
       </main>
     </>
   );

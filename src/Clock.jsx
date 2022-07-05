@@ -1,38 +1,66 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sketch from "react-p5";
 
-export default function canvasCreator(time, breakTime, isBreak, isPause) {
+let elaspedTime = window.localStorage.getItem("elaspedTime") || 0;
+
+export default function CanvasCreator({
+  time,
+  breakTime,
+  isBreak,
+  isPause,
+  setIsPause,
+}) {
+
   const setup = (p5, canvasParentRef) => {
     if (p5.windowWidth >= 600) {
-      p5.createCanvas(
-        (p5.windowHeight / 100) * 69,
-        (p5.windowHeight / 100) * 69
-      ).parent(canvasParentRef);
+      let canvasHeight = (p5.windowHeight / 100) * 69;
+      let canvasWidth = canvasHeight;
+      p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
     } else {
-      p5.createCanvas(p5.windowWidth, p5.windowWidth).parent(canvasParentRef);
+      let canvasHeight = p5.windowWidth;
+      let canvasWidth = p5.windowWidth;
+      p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
     }
     p5.angleMode(p5.DEGREES);
   };
-  // let time = 45 * 60;
+
   let sessionSeconds = !isBreak
     ? parseInt(time.hr) * 3600 + parseInt(time.min) * 60 + parseInt(time.sec)
     : parseInt(breakTime.hr) * 3600 +
       parseInt(breakTime.min) * 60 +
       parseInt(breakTime.sec);
-  let elaspedTime = 0;
-  setInterval(() => {
-    if (!isPause) {
-      elaspedTime++;
+
+  useEffect(() => {
+    let interval = setInterval(() => {
+      if (!isPause) {
+        elaspedTime++;
+        localStorage.setItem("elaspedTime", elaspedTime);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [isPause, isBreak]);
+
+  useEffect(() => {
+    if (isBreak) {
+      elaspedTime = 0;
+      setIsPause(true);
     }
-    console.log(isPause)
-    // console.log(elaspedTime);
-  }, 1000);
+  }, [isBreak, breakTime]);
+
+  useEffect(() => {
+    if (!isBreak) {
+      elaspedTime = 0;
+      setIsPause(true);
+    }
+  }, [isBreak, time]);
+
   function formatter(digit) {
     if (digit.toString().length === 1) {
       return "0" + digit.toString();
     }
     return digit;
   }
+
   const draw = (p5) => {
     p5.background(68, 137, 148);
     p5.translate(p5.width / 2, p5.height / 2);
@@ -58,17 +86,15 @@ export default function canvasCreator(time, breakTime, isBreak, isPause) {
     );
     let remainingSec =
       sessionSeconds - elaspedTime - remainingMin * 60 - remainingHr * 3600;
-    // console.log(hr + ":" + min + ":" + sec);
-    // console.log(hr)
+
     p5.noFill();
-    // let end1 = p5.map(sec, 0, 60, 0, 360);
-    // let end2 = p5.map(min, 0, 60, 0, 360);
-    // let end3 = p5.map(hr % 12, 0, 12, 0, 360);
     document.querySelector(".hr").textContent = formatter(remainingHr);
     document.querySelector(".min").textContent = formatter(remainingMin);
     document.querySelector(".sec").textContent = formatter(remainingSec);
+
     let end = p5.map(elaspedTime, 0, sessionSeconds, 0, 360);
-    let x = p5.windowWidth - 100 >= 600 ? 600 : p5.windowWidth - 50;
+    let x = p5.width - 100 >= 600 ? 600 : p5.width - 50;
+
     p5.stroke(68, 71, 71, 100);
     p5.arc(0, 0, x, x, 0, 360);
     p5.stroke(255);
@@ -78,7 +104,6 @@ export default function canvasCreator(time, breakTime, isBreak, isPause) {
     p5.fill(255);
     p5.noStroke();
     p5.circle((x / 2) * p5.cos(end), (x / 2) * p5.sin(end), x / 15);
-    // p5.circle((x / 2) * p5.cos(end1), (x / 2) * p5.sin(end1), x / 15);
   };
 
   return <Sketch setup={setup} draw={draw} />;
