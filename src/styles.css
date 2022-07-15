@@ -1,8 +1,12 @@
-*,*::before,*::after{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    outline:1px solid red;
+@import url("https://fonts.googleapis.com/css2?family=PT+Mono&family=Roboto+Mono&family=Varela+Round&display=swap");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* outline:1px solid red; */
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -12,10 +16,12 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
+  padding: 0.5em 0;
+  font-size: 1.1em;
 }
-.test {
+/* .test {
     display:flex;
     flex-direction: row;
     gap:1em;
@@ -24,4 +30,4 @@ input[type=number] {
 .test input{
     width:4ch;
     text-align: center;
-}
+} */

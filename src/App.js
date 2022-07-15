@@ -5,19 +5,33 @@ import CanvasCreator from "./Clock";
 import Settings from "./Settings";
 import Help from "./Help";
 function App() {
-  const [time, setTime] = useState({ hr: "00", min: "25", sec: "00" });
-  const [breakTime, setBreakTime] = useState({
-    hr: "00",
-    min: "15",
-    sec: "00",
+  const [time, setTime] = useState({
+    hr: {
+      0: 0,
+      1: 0,
+    },
+    min: {
+      0: 1,
+      1: 5,
+    },
+    sec: {
+      0: 0,
+      1: 0,
+    },
   });
-  const [test, setTest] = useState({
-    hr0: 0,
-    hr1: 0,
-    min0: 1,
-    min1: 5,
-    sec0: 0,
-    sec1: 0,
+  const [breakTime, setBreakTime] = useState({
+    hr: {
+      0: 0,
+      1: 0,
+    },
+    min: {
+      0: 1,
+      1: 0,
+    },
+    sec: {
+      0: 0,
+      1: 0,
+    },
   });
   const [isBreak, setIsBreak] = useState(false);
   const [isPause, setIsPause] = useState(true);
@@ -25,14 +39,9 @@ function App() {
     if (window.confirm("You sure you want to skip the session?")) {
       setIsBreak(!isBreak);
       localStorage.setItem("elaspedTime", 0);
+      setIsPause(false);
     }
   };
-  // const handleChange = (e, setMethod, method, element) => {
-  //   setMethod((prevValue) => ({
-  //     ...prevValue,
-  //     hr: e.target.value,
-  //   }));
-  // };
   return (
     <>
       <main className="relative bg-teal h-[100vh] w-full grid grid-rows-[10%_auto_10%]">
@@ -42,12 +51,10 @@ function App() {
             setTime={setTime}
             breakTime={breakTime}
             setBreakTime={setBreakTime}
-            test={test}
-            setTest={setTest}
           />
           <Help />
         </nav>
-        <div className="clock-section relative grid place-items-center overflow-hidden">
+        <div className="clock-section text-white relative grid place-items-center overflow-hidden">
           <div className="clock-circle-wrapper grid place-items-center">
             <CanvasCreator
               time={time}
@@ -55,15 +62,17 @@ function App() {
               isBreak={isBreak}
               isPause={isPause}
               setIsPause={setIsPause}
+              setIsBreak={setIsBreak}
             />
           </div>
           <div className="clock-info-wrapper absolute left-1/2 top-1/2 h-1/2 grid place-items-center transform -translate-x-1/2 -translate-y-1/2">
             <div className="title-section">
-              <p>Pomodoro</p>
+              <p>{!isBreak ? `Pomodoro` : `Break`}</p>
             </div>
             <section className="time-display flex flex-row">
               <span className="hr">00</span>:<span className="min">17</span>:
               <span className="sec">17</span>
+              <br />
             </section>
             <section className="button-display flex gap-5">
               <button className="pause" onClick={() => setIsPause(!isPause)}>
