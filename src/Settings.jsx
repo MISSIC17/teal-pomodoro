@@ -4,13 +4,18 @@ import { FiSettings } from "react-icons/fi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosTimer } from "react-icons/io";
 import Field from "./Field";
+import DefaultSession from "./DefaultSession";
 
-export default function Settings({ time, setTime, breakTime, setBreakTime }) {
-  const [showSettings, setShowSettings] = useState(true);
+export default function Settings({ time, setTime, breakTime, setBreakTime, setIsBreak }) {
+  const [showSettings, setShowSettings] = useState(false);
   const [settingsPos, setSettingsPos] = useState({ right: "0", top: "0" });
 
   const types = ["hr", "min", "sec"];
-
+  const defaultSessions = [
+    [20, 5],
+    [35, 7],
+    [55, 10],
+  ];
   const handleSettingsClick = (e) => {
     setShowSettings(!showSettings);
     const settingBtn = e.target.getBoundingClientRect();
@@ -68,8 +73,6 @@ export default function Settings({ time, setTime, breakTime, setBreakTime }) {
     let key = Object.keys(time)[typeIndex];
     if (e.target.value.length > 1) {
       e.target.value = parseInt(e.target.value.slice(1));
-      // console.log(typeof e.target.value, e.target.value);
-      // console.log(e.target.value, e.target.value.length);
       setType((prevState) => ({
         ...prevState,
         [key]: {
@@ -131,7 +134,7 @@ export default function Settings({ time, setTime, breakTime, setBreakTime }) {
         )}
       </div>
       <section
-        className={`settings-options-wrapper grid justify-items-center gap-3
+        className={`settings-options-wrapper  grid justify-items-center gap-3
       absolute right-[${settingsPos.right}px] top-[${settingsPos.top}px] ${
           showSettings ? "" : "hidden"
         } p-3 z-10 `}
@@ -140,67 +143,78 @@ export default function Settings({ time, setTime, breakTime, setBreakTime }) {
         <div className="settings-title relative w-fit px-4 shadow-[0px_4px_11px_0px_black]">
           <p className="text-2xl px-8 py-2">Settings</p>
         </div>
-        <form className="time" onSubmit={(e) => e.preventDefault()}>
+        <form
+          className="time relative w-[90%]"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <label>
             <IoIosTimer className="h-8 w-8" />
             Session duration
           </label>
-
-          {types.map((type, index) => {
-            console.log("hi");
-            return (
-              <Field
-                key={`${type}-${index}`}
-                type="time"
-                time={time}
-                keyName={type}
-                keyIndex={index}
-                setType={setTime}
-                handleFocus={handleFocus}
-                handleInput={handleInput}
-              />
-            );
-          })}
-
-          {/* <input
-              type="number"
-              name="time-sec-0"
-              id="time-sec-0"
-              value={time.sec[0]}
-              min="0"
-              onFocus={handleFocus}
-              onChange={(e) => handleInput(e, 2, 0)}
-              />
-              <input
-              type="number"
-              name="time-sec-1"
-              id="time-sec-1"
-              value={time.sec[1]}
-              min="0"
-              onFocus={handleFocus}
-              onChange={(e) => handleInput(e, 2, 1)}
-            /> */}
+          <div className="flex gap-4">
+            {types.map((type, index) => {
+              return (
+                <Field
+                  key={`${type}-${index}`}
+                  type="time"
+                  time={time}
+                  keyName={type}
+                  keyIndex={index}
+                  setType={setTime}
+                  handleFocus={handleFocus}
+                  handleInput={handleInput}
+                />
+              );
+            })}
+          </div>
         </form>
         <form className="break" onSubmit={(e) => e.preventDefault()}>
           <label>
             <IoIosTimer className="h-8 w-8" />
             Break duration
           </label>
-          {types.map((type, index) => {
-            return (
-              <Field
-                key={`${type}-${index}`}
-                type="break"
-                time={breakTime}
-                keyName={type}
-                keyIndex={index}
-                setType={setBreakTime}
-                handleFocus={handleFocus}
-                handleInput={handleInput}
-              />
-            );
-          })}
+          <div className="flex gap-4">
+            {types.map((type, index) => {
+              return (
+                <Field
+                  key={`${type}-${index}`}
+                  type="break"
+                  time={breakTime}
+                  keyName={type}
+                  keyIndex={index}
+                  setType={setBreakTime}
+                  handleFocus={handleFocus}
+                  handleInput={handleInput}
+                />
+              );
+            })}
+          </div>
         </form>
+        <section
+          id="default-sessions-wrapper"
+          className="relative grid gap-5 justify-center align-middle flex-col"
+        >
+          <div
+            id="default-sessions-title"
+            className="relative text-center w-[90%] justify-self-center px-4 py-4 bg-teal-3 shadow-[0px_4px_11px_0px_black]"
+          >
+            <p> Default sessions</p>
+          </div>
+          <div id="default-sessions" className="flex flex-row gap-4">
+            {defaultSessions.map((defaultSession, index) => {
+              return (
+                <DefaultSession
+                  key={index}
+                  time={defaultSession[0]}
+                  breakTime={defaultSession[1]}
+                  setTime={setTime}
+                  setBreakTime={setBreakTime}
+                  setIsBreak = {setIsBreak}
+                />
+              );
+            })}
+          </div>
+        </section>
       </section>
     </>
   );

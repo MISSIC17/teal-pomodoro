@@ -28,12 +28,12 @@ canvas {
   font-family: "Varela Round", sans-serif;
 }
 .clock-info-wrapper .title-section p {
-  font-size: 2em;
+  font-size: clamp(1em, calc(1.2em + 1vw), 2em);
 }
 .clock-info-wrapper .time-display {
   font-size: 88px;
   line-height: 106px;
-  font-size: 4.5em;
+  font-size: clamp(2.75em, calc(6em - 1vw), 5em);
 }
 .settings-options-wrapper::before {
   content: "";
@@ -50,9 +50,10 @@ canvas {
 .settings-options-wrapper form {
   position: relative;
   display: grid;
-  width: fit-content;
+  width: 98%;
   padding: 2em 1em;
-  grid-template-columns: 10rem auto auto auto;
+  /* grid-template-columns: 10% repeat(3,5em); */
+  grid-template-columns: 40% 60%;
   place-items: center;
   box-shadow: 0px 4px 14px rgb(0 0 0/75%);
 }
@@ -88,4 +89,52 @@ canvas {
 .time-sec::after,
 .break-sec::after {
   content: "sec";
+}
+
+.button-display > button {
+  padding: 0.8em 1.2em;
+  background: white;
+  border-radius: 25px;
+  filter: drop-shadow(1px 5px 13px rgba(0, 0, 0, 0.65));
+}
+.control-icon {
+  height: 4em;
+  width: 4em;
+}
+#default-sessions-wrapper {
+  font-family: "Oswald", sans-serif;
+}
+.alert {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 69;
+  background-color: rgba(255 0 0 /60%);
+  color: white;
+  padding: 2em 1em;
+  border-radius: 0.5em;
+  margin-top: 1em;
+}
+.entry-animation {
+  animation: entryBox 3s forwards;
+}
+@keyframes entryBox {
+  0% {
+    top: -100%;
+  }
+  11%,
+  100% {
+    top: 2em;
+  }
+}
+.exit-animation {
+  animation: exit 1s forwards;
+}
+@keyframes exit {
+  0% {
+    top: 2.1em;
+  }
+  100% {
+    top: -100%;
+  }
 }

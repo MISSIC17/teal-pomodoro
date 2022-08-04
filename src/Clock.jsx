@@ -1,7 +1,14 @@
 import React, { useEffect } from "react";
 import Sketch from "react-p5";
 
-let elaspedTime = window.localStorage.getItem("elaspedTime") || 0;
+let elaspedTime = window.sessionStorage.getItem("elaspedTime") || 0;
+
+export function formatter(digit) {
+  if (digit.toString().length === 1) {
+    return "0" + digit.toString();
+  }
+  return digit.toString();
+}
 
 export default function CanvasCreator({
   time,
@@ -10,6 +17,8 @@ export default function CanvasCreator({
   isPause,
   setIsPause,
   setIsBreak,
+  showAlert,
+  setError,
 }) {
   const setup = (p5, canvasParentRef) => {
     if (p5.windowWidth >= 600) {
@@ -24,6 +33,7 @@ export default function CanvasCreator({
     p5.angleMode(p5.DEGREES);
   };
   let currentTimeObj = !isBreak ? time : breakTime;
+
   let currentHr = parseInt(
     currentTimeObj.hr[0].toString() + currentTimeObj.hr[1].toString()
   );
@@ -33,20 +43,29 @@ export default function CanvasCreator({
   let currentSec = parseInt(
     currentTimeObj.sec[0].toString() + currentTimeObj.sec[1].toString()
   );
-  let sessionSeconds =
-    parseInt(currentHr) * 3600 +
-    parseInt(currentMin) * 60 +
-    parseInt(currentSec);
+  const timeObjToSeconds = (timeObj) => {
+    let hr = parseInt(timeObj.hr[0].toString() + timeObj.hr[1].toString());
+    let min = parseInt(timeObj.min[0].toString() + timeObj.min[1].toString());
+    let sec = parseInt(timeObj.sec[0].toString() + timeObj.sec[1].toString());
+    let totalSeconds = parseInt(hr) * 3600 + parseInt(min) * 60 + parseInt(sec);
+    return totalSeconds;
+  };
+  let sessionSeconds = !isBreak
+    ? timeObjToSeconds(time)
+    : timeObjToSeconds(breakTime);
+  let minSeconds = !isBreak ? 900 : 300;
   useEffect(() => {
     let interval = setInterval(() => {
-      if (!isPause) {
+      if (!isPause && sessionSeconds > minSeconds) {
         elaspedTime++;
-        localStorage.setItem("elaspedTime", elaspedTime);
-        console.log(elaspedTime);
+        sessionStorage.setItem("elaspedTime", elaspedTime);
       }
     }, 1000);
     return () => clearInterval(interval);
   }, [isPause, isBreak]);
+  useEffect(() => {
+    elaspedTime = 0;
+  }, [isBreak]);
 
   useEffect(() => {
     if (isBreak) {
@@ -54,28 +73,43 @@ export default function CanvasCreator({
       setIsPause(true);
     }
   }, [breakTime]);
+  useEffect(() => {}, [isPause, isBreak]);
+  useEffect(() => {
+    if (timeObjToSeconds(time) < 1200) {
+      showAlert(
+        true,
+        "warning",
+        "Session duration cannot be less than 20 minutes"
+      );
+      setError(true);
+      // setError(true, "Session duration cannot be less than 20 minutes")
+      // setIsLazyTime(true);
+      // setAlertMessage("Session duration cannot be less than 20 minutes");
+    }
+    if (timeObjToSeconds(breakTime) < 300) {
+      showAlert(
+        true,
+        "warning",
+        "Break duration cannot be less than 5 minutes"
+      );
+      setError(true);
+      // setIsLazyTime(true);
+      // setAlertMessage("Break duration cannot be less than 5 minutes");
+    }
+    if (timeObjToSeconds(time) >= 1200 && timeObjToSeconds(breakTime) >= 300) {
+      setError(false);
+    }
+  }, [time, breakTime]);
 
   useEffect(() => {
     if (!isBreak) {
-      if (sessionSeconds === elaspedTime) {
+      if (sessionSeconds !== 0 && sessionSeconds === elaspedTime) {
         setIsBreak(!isBreak);
       }
       elaspedTime = 0;
       setIsPause(true);
     }
   }, [time]);
-
-  // useEffect(() => {
-  //   setIsPause(false);
-  //   elaspedTime = 0;
-  // }, [isBreak]);
-
-  function formatter(digit) {
-    if (digit.toString().length === 1) {
-      return "0" + digit.toString();
-    }
-    return digit;
-  }
 
   const draw = (p5) => {
     p5.background(68, 137, 148);
@@ -90,31 +124,10 @@ export default function CanvasCreator({
     let remainingSec = parseInt(
       remainingTime - remainingHr * 3600 - remainingMin * 60
     );
-    // let remainingHr = parseInt((sessionSeconds - elaspedTime) / 3600);
-    // let remainingMin = parseInt(
-    //   (sessionSeconds - elaspedTime - elaspedHr * 3600) / 60
-    // );
-
-    // let remainingSec = parseInt(
-    //   sessionSeconds -
-    //     elaspedTime -
-    //     remainingMin * 60 -
-    //     remainingHr * 3600 -
-    //     elaspedSec
-    // );
-    // let remainingSec = sessionSeconds - elaspedHr * 3600 - elaspedMin * 60;
-    console.log(
-      elaspedHr,
-      elaspedMin,
-      elaspedSec,
-      remainingHr,
-      remainingMin,
-      remainingSec
-    );
-    if (sessionSeconds === elaspedTime) {
+    if (sessionSeconds !== 0 && sessionSeconds === elaspedTime) {
+      remainingSec = 0;
       setIsPause(true);
       setIsBreak(!isBreak);
-      console.log("h");
     }
     p5.noFill();
 
@@ -122,7 +135,6 @@ export default function CanvasCreator({
     document.querySelector(".min").textContent = formatter(remainingMin);
     document.querySelector(".sec").textContent = formatter(remainingSec);
 
-    console.log(document.querySelector('.hr'))
     let end = p5.map(elaspedTime, 0, sessionSeconds, 0, 360);
     let x = p5.width - 100 >= 600 ? 600 : p5.width - 50;
 

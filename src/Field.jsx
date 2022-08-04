@@ -10,7 +10,7 @@ export default function Field({
 }) {
   return (
     <div
-      className={`${type}-${keyName} relative  after:absolute after:-bottom-1/2 after:left-1/2 after:transform after:-translate-x-1/2`}
+      className={`${type}-${keyName} relative flex flex-nowrap  after:absolute after:-bottom-1/2 after:left-1/2 after:transform after:-translate-x-1/2`}
     >
       <input
         key={`${keyName}-0`}
