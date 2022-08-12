@@ -1,7 +1,7 @@
 import "./App.css";
 import "./styles.css";
 import "./responsive.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CanvasCreator from "./Clock";
 import Settings from "./Settings";
 import Help from "./Help";
@@ -10,6 +10,7 @@ import { BsFillPauseCircleFill } from "react-icons/bs";
 import { IoPlaySkipForwardSharp } from "react-icons/io5";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { IconContext } from "react-icons";
+import { MdLiveHelp } from "react-icons/md";
 function App() {
   const [time, setTime] = useState({
     hr: {
@@ -43,23 +44,46 @@ function App() {
   const [isPause, setIsPause] = useState(true);
   const [alert, setAlert] = useState({ show: false, msg: "", type: "" });
   const [error, setError] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const handleBreakChange = () => {
-    if(!error)
-    if (window.confirm("You sure you want to skip the session?")) {
-      setIsBreak(!isBreak);
-      sessionStorage.setItem("elaspedTime", 0);
-      setIsPause(false);
-    }
+    if (!error)
+      if (window.confirm("You sure you want to skip the session?")) {
+        setIsBreak(!isBreak);
+        sessionStorage.setItem("elaspedTime", 0);
+        setIsPause(false);
+      }
   };
   const showAlert = (show = false, type = "", msg = "") => {
     setAlert({ show, type, msg });
   };
   // const reportError = (exists = false, msg = ""){
   //   setE }
-
+  const handleKeyPress = (e) => {
+    console.log(e.keyCode);
+    console.log(e.ctrlKey);
+    if (e.key === "s") {
+      handleBreakChange();
+    } else if (e.key === "p") {
+      setIsPause(!isPause);
+    } else if (e.shiftKey) {
+      // document.querySelector("#settings-wrapper").click();
+      setShowSettings(!showSettings);
+    } else if (e.key === "h") {
+      setShowHelp(!showHelp);
+    } else if (e.key === "m") {
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+    return () => document.removeEventListener("keydown", handleKeyPress);
+  });
   return (
     <>
-      {alert.show && error && <Alert {...alert} removeAlert={showAlert} error={error} />}
+      {alert.show && error && (
+        <Alert {...alert} removeAlert={showAlert} error={error} />
+      )}
+      {showHelp && <Help showHelp={showHelp} setShowHelp={setShowHelp} />}
       <main className="relative bg-teal h-[100vh] w-full grid grid-rows-[10%_auto_10%]">
         <nav className="flex justify-end pr-4 pt-3 gap-4">
           <Settings
@@ -67,8 +91,16 @@ function App() {
             setTime={setTime}
             breakTime={breakTime}
             setBreakTime={setBreakTime}
-            setIsBreak = {setIsBreak}
+            setIsBreak={setIsBreak}
+            showSettings={showSettings}
+            setShowSettings={setShowSettings}
           />
+          <IconContext.Provider value={{ color: "white" }}>
+            <MdLiveHelp
+              className="h-10 w-10"
+              onClick={() => setShowHelp(true)}
+            />
+          </IconContext.Provider>
           <Help />
         </nav>
         <div className="clock-section text-white relative grid place-items-center overflow-hidden">
@@ -81,7 +113,7 @@ function App() {
               setIsPause={setIsPause}
               setIsBreak={setIsBreak}
               showAlert={showAlert}
-              setError = {setError}
+              setError={setError}
             />
           </div>
           <div className="clock-info-wrapper absolute left-1/2 top-1/2 h-1/2 grid place-items-center transform -translate-x-1/2 -translate-y-1/2">

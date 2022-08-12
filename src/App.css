@@ -1,3 +1,8 @@
+:root {
+  --primary-color: 68, 137, 148;
+  --secondary-color: 128, 46, 35;
+  --bright-primary: 70, 188, 196;
+}
 *,
 *::before,
 *::after {
@@ -138,3 +143,57 @@ canvas {
     top: -100%;
   }
 }
+
+#help-section-wrapper {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+}
+#help-section {
+  position: relative;
+  display: grid;
+  place-items: center;
+  background-color: rgba(var(--primary-color), 0.3);
+  backdrop-filter: blur(8px);
+  border-radius: 19px;
+  padding-bottom: 3em;
+  gap: 1em;
+}
+#help-section > button {
+  position: absolute;
+  right: 0%;
+  top: 0;
+  transform: translate(50%, -50%);
+  z-index: 11;
+}
+#hacks {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+#help-section > header {
+  width: 100%;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.19);
+  backdrop-filter: blur(100px);
+  padding: 1em 0;
+  color:white;
+  border-radius: 19px 19px 0 0;
+}
+#hacks > li {
+  list-style: none;
+  background-color: rgba(var(--bright-primary), 0.7);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.68);
+
+}
+#hacks>li>span{
+  font-size:1.2em;
+}
+/* .hack {
+  position: relative;
+  padding: 1em 2em;
+  text-align: center;
+} */

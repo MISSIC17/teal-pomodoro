@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { IconContext } from "react-icons";
 import { FiSettings } from "react-icons/fi";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -6,24 +6,50 @@ import { IoIosTimer } from "react-icons/io";
 import Field from "./Field";
 import DefaultSession from "./DefaultSession";
 
-export default function Settings({ time, setTime, breakTime, setBreakTime, setIsBreak }) {
-  const [showSettings, setShowSettings] = useState(false);
+export default function Settings({
+  time,
+  setTime,
+  breakTime,
+  setBreakTime,
+  setIsBreak,
+  showSettings,
+  setShowSettings,
+}) {
+  // const [showSettings, setShowSettings] = useState(false);
   const [settingsPos, setSettingsPos] = useState({ right: "0", top: "0" });
-
   const types = ["hr", "min", "sec"];
   const defaultSessions = [
     [20, 5],
     [35, 7],
     [55, 10],
   ];
-  const handleSettingsClick = (e) => {
-    setShowSettings(!showSettings);
-    const settingBtn = e.target.getBoundingClientRect();
+  useEffect(()=>{
+   let target = document.querySelector("#settings-wrapper svg") ;
+    const settingBtn = target.getBoundingClientRect();
     setSettingsPos((prevPos) => ({
       ...prevPos,
-      right: window.innerWidth - settingBtn.left - e.target.clientWidth,
+      right: window.innerWidth - settingBtn.left - target.clientWidth,
       top: settingBtn.top,
     }));
+  },);
+  // const settingsCoordinates = useCallback(() => {
+  //   let target = document.querySelector("#settings-wrapper svg");
+  //   const settingBtn = target.getBoundingClientRect();
+  //   setSettingsPos((prevPos) => ({
+  //     ...prevPos,
+  //     right: window.innerWidth - settingBtn.left - target.clientWidth,
+  //     top: settingBtn.top,
+  //   }));
+  // }, [windowWidth]);
+  const handleSettingsClick = (e) => {
+    setShowSettings(!showSettings);
+    // const settingBtn = e.target.getBoundingClientRect();
+    // setSettingsPos((prevPos) => ({
+    //   ...prevPos,
+    //   right: window.innerWidth - settingBtn.left - e.target.clientWidth,
+    //   top: settingBtn.top,
+    // }));
+    // console.log(document.querySelector("#settings-wrapper svg"))
   };
 
   const changeFocus = (e, direction) => {
@@ -119,14 +145,23 @@ export default function Settings({ time, setTime, breakTime, setBreakTime, setIs
   };
   return (
     <>
-      <div className="settings-wrapper">
+      <div
+        id="settings-wrapper"
+        className="settings-wrapper h-fit w-fit"
+        onClick={() => handleSettingsClick}
+      >
         {!showSettings ? (
           <IconContext.Provider value={{ color: "white" }}>
-            <FiSettings className="w-10 h-10 " onClick={handleSettingsClick} />
+            <FiSettings
+              id="settings-icon"
+              className="w-10 h-10"
+              onClick={handleSettingsClick}
+            />
           </IconContext.Provider>
         ) : (
           <IconContext.Provider value={{ color: "red" }}>
             <AiFillCloseCircle
+              id="settings-close-icon"
               className="w-10 h-10 relative z-50"
               onClick={handleSettingsClick}
             />
@@ -209,7 +244,7 @@ export default function Settings({ time, setTime, breakTime, setBreakTime, setIs
                   breakTime={defaultSession[1]}
                   setTime={setTime}
                   setBreakTime={setBreakTime}
-                  setIsBreak = {setIsBreak}
+                  setIsBreak={setIsBreak}
                 />
               );
             })}
