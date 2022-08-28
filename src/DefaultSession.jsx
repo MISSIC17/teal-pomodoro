@@ -5,11 +5,12 @@ export default function DefaultSession({
   breakTime,
   setTime,
   setBreakTime,
-  setIsBreak
+  isBreak,
+  setIsBreak,
 }) {
   const handleClick = () => {
     //change the time there on the clock
-    setIsBreak(false) ;
+    setIsBreak(false);
     setTime(secondsToHrMinSec(time * 60));
     setBreakTime(secondsToHrMinSec(breakTime * 60));
   };
@@ -37,14 +38,22 @@ export default function DefaultSession({
   return (
     <section
       id="default-sesction"
-      className="relative py-6 px-3 grid justify-items-center justify-self-center rounded-lg bg-teal text-white"
+      className={`relative mb-4 py-6 px-3 grid justify-items-center justify-self-center rounded-lg ${
+        !isBreak ? "bg-teal" : "bg-brickred"
+      } text-white`}
       onClick={handleClick}
     >
       <p>
-        <span className="text-4xl"> {time}</span>min +{" "}
-        <span className="text-3xl">{breakTime}</span>min
+        <span className="lg:text-4xl sm:text-3xl "> {time}</span>min +{" "}
+        <span className="lg:text-3xl sm:text-2xl ">{breakTime}</span>min
       </p>
-      <p className=" bottom-2 text-teal-2 shadow-inner ">session</p>
+      <p
+        className={` bottom-2 ${
+          !isBreak ? "text-teal-2" : "text-brickred-1"
+        } shadow-inner `}
+      >
+        session
+      </p>
     </section>
   );
 }

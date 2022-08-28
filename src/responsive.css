@@ -1,4 +1,41 @@
-/* @media screen and (max-width: 600px) {
-}
 @media screen and (max-width: 1200px) {
-} */
+  .clock-info-wrapper .time-display {
+    font-size: 88px;
+    line-height: 106px;
+    font-size: clamp(2em, calc(3.5em + 0.5vw), 5em);
+  }
+  .control-icon{
+    height:3em;
+    width:3em;
+  }
+  
+}
+@media screen and (max-width: 600px) {
+  .clock-info-wrapper .time-display {
+    font-size: 88px;
+    font-size: clamp(2em, calc(3.5em + 0.5vw), 4.5em);
+    line-height: 106px;
+  }
+  .control-icon{
+    height:2.5em;
+    width:2.5em;
+  }
+  .settings-options-wrapper{
+    position: absolute;
+    width:100vw;
+    height:100vh;
+    top:0;
+    left:0;
+
+  }
+  .settings-options-wrapper form{
+    grid-template-rows: 30% 70%;
+    grid-template-columns: none;
+  }
+.settings-options-wrapper form > label {
+  position: relative;
+  top:-0.6em;
+  justify-self: center;
+}
+}
+

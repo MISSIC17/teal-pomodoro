@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { IconContext } from "react-icons";
 import { FiSettings } from "react-icons/fi";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -14,6 +14,7 @@ export default function Settings({
   setIsBreak,
   showSettings,
   setShowSettings,
+  isBreak,
 }) {
   // const [showSettings, setShowSettings] = useState(false);
   const [settingsPos, setSettingsPos] = useState({ right: "0", top: "0" });
@@ -23,33 +24,18 @@ export default function Settings({
     [35, 7],
     [55, 10],
   ];
-  useEffect(()=>{
-   let target = document.querySelector("#settings-wrapper svg") ;
+  let screenWidth = window.clientWidth;
+  useEffect(() => {
+    let target = document.querySelector("#settings-wrapper svg");
     const settingBtn = target.getBoundingClientRect();
     setSettingsPos((prevPos) => ({
       ...prevPos,
       right: window.innerWidth - settingBtn.left - target.clientWidth,
       top: settingBtn.top,
     }));
-  },);
-  // const settingsCoordinates = useCallback(() => {
-  //   let target = document.querySelector("#settings-wrapper svg");
-  //   const settingBtn = target.getBoundingClientRect();
-  //   setSettingsPos((prevPos) => ({
-  //     ...prevPos,
-  //     right: window.innerWidth - settingBtn.left - target.clientWidth,
-  //     top: settingBtn.top,
-  //   }));
-  // }, [windowWidth]);
+  }, [screenWidth]);
   const handleSettingsClick = (e) => {
     setShowSettings(!showSettings);
-    // const settingBtn = e.target.getBoundingClientRect();
-    // setSettingsPos((prevPos) => ({
-    //   ...prevPos,
-    //   right: window.innerWidth - settingBtn.left - e.target.clientWidth,
-    //   top: settingBtn.top,
-    // }));
-    // console.log(document.querySelector("#settings-wrapper svg"))
   };
 
   const changeFocus = (e, direction) => {
@@ -79,6 +65,16 @@ export default function Settings({
           wrapperIndex + 1
         ].childNodes[0].focus();
       }
+      else if(
+        currentInputWrapper.childNodes[childIndex] ===
+          currentInputWrapper.lastChild &&
+        currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
+          currentInputWrapper.parentNode.lastChild
+        
+      ){
+        document.querySelector('input#break-hr-0').focus();
+
+      }
     } else if (direction === "backwards") {
       if (childIndex === 1) {
         currentInputWrapper.childNodes[childIndex - 1].focus();
@@ -91,12 +87,26 @@ export default function Settings({
         currentInputWrapper.parentNode.childNodes[
           wrapperIndex - 1
         ].childNodes[1].focus();
-      }
+        // console.log(document.activeElement);
+      }else if(currentInputWrapper.childNodes[childIndex] ===
+        currentInputWrapper.firstChild &&
+      currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
+        currentInputWrapper.parentNode.firstChild)
+    {
+        document.querySelector('input#time-sec-1').focus();
     }
+  }
   };
 
   const handleInput = (e, typeIndex, posIndex, setType) => {
+    // e.target.addEventListener("keydown", (event) => {
+    //   if (event.key > -1 || event.key < 10) {
+    //     console.log(typeof event.key)
+    //     e.target.value = event.key;
+    //   }
+    // });
     let key = Object.keys(time)[typeIndex];
+
     if (e.target.value.length > 1) {
       e.target.value = parseInt(e.target.value.slice(1));
       setType((prevState) => ({
@@ -119,27 +129,15 @@ export default function Settings({
   };
 
   const handleFocus = (e) => {
-    e.target.type = "text";
-    e.target.setSelectionRange(e.target.value.length, e.target.value.length);
-    e.target.type = "number";
     e.target.addEventListener("keydown", (event) => {
-      console.log(e.target.value);
-      // if (event.key === "ArrowUp") {
-      //   if (parseInt(e.target.value === 8)) {
-      //     e.target.value = 0;
-      //   }
-      // }
-
-      if (e.target.value === "8") {
-        console.log("I am 9");
-      }
-      if (event.key === "ArrowRight") {
-        console.log("hi");
-      }
       if (event.key === "ArrowRight") {
         changeFocus(e, "forwards");
       } else if (event.key === "ArrowLeft") {
         changeFocus(e, "backwards");
+      }
+      if (event.key > -1 || event.key < 10) {
+        console.log(typeof event.key);
+        e.target.value = event.key;
       }
     });
   };
@@ -225,15 +223,25 @@ export default function Settings({
             })}
           </div>
         </form>
+        <div
+          className={`settings-separator relative z-10 my-4 ${
+            !isBreak ? "bg-teal" : "bg-brickred"
+          } w-2/3 h-1`}
+        ></div>
         <section
           id="default-sessions-wrapper"
           className="relative grid gap-5 justify-center align-middle flex-col"
         >
           <div
             id="default-sessions-title"
-            className="relative text-center w-[90%] justify-self-center px-4 py-4 bg-teal-3 shadow-[0px_4px_11px_0px_black]"
+            className={`relative text-center w-[90%] justify-self-center px-4 py-4 ${
+              !isBreak ? "bg-teal-3" : "bg-brickred"
+            } shadow-[0px_4px_11px_0px_black]`}
           >
-            <p> Default sessions</p>
+            <p className={`${!isBreak ? "text-black" : "text-white"}`}>
+              {" "}
+              Default sessions
+            </p>
           </div>
           <div id="default-sessions" className="flex flex-row gap-4">
             {defaultSessions.map((defaultSession, index) => {
@@ -244,6 +252,7 @@ export default function Settings({
                   breakTime={defaultSession[1]}
                   setTime={setTime}
                   setBreakTime={setBreakTime}
+                  isBreak={isBreak}
                   setIsBreak={setIsBreak}
                 />
               );
@@ -253,4 +262,4 @@ export default function Settings({
       </section>
     </>
   );
-}
+};

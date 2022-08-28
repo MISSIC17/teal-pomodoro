@@ -12,28 +12,21 @@ export default function Field({
     <div
       className={`${type}-${keyName} relative flex flex-nowrap  after:absolute after:-bottom-1/2 after:left-1/2 after:transform after:-translate-x-1/2`}
     >
-      <input
-        key={`${keyName}-0`}
-        type="number"
-        id={`${type}-${keyName}-0`}
-        name={`${type}-${keyName}-0`}
-        value={time[keyName][0]}
-        min="0"
-        max="9"
-        onFocus={handleFocus}
-        onChange={(e) => handleInput(e, keyIndex, 0, setType)}
-      />
-      <input
-        key={`${keyName}-1`}
-        type="number"
-        id={`${type}-${keyName}-1`}
-        name={`${type}-${keyName}-1`}
-        value={time[keyName][1]}
-        min="0"
-        max="9"
-        onFocus={handleFocus}
-        onChange={(e) => handleInput(e, keyIndex, 1, setType)}
-      />
+      {[0, 1].map((index) => {
+        return (
+          <input
+            key={`${keyName}-${index}`}
+            type="number"
+            id={`${type}-${keyName}-${index}`}
+            name={`${type}-${keyName}-${index}`}
+            value={time[keyName][index]}
+            min="0"
+            max="9"
+            onFocus={handleFocus}
+            onChange={(e) => handleInput(e, keyIndex, index, setType)}
+          />
+        );
+      })}
     </div>
   );
 }

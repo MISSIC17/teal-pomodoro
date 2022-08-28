@@ -11,6 +11,13 @@
   box-sizing: border-box;
   user-select: none;
 }
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 input {
   background-color: black;
   color: white;
@@ -34,11 +41,12 @@ canvas {
 }
 .clock-info-wrapper .title-section p {
   font-size: clamp(1em, calc(1.2em + 1vw), 2em);
+  color: rgba(255 255 255 / 0.7);
 }
 .clock-info-wrapper .time-display {
   font-size: 88px;
   line-height: 106px;
-  font-size: clamp(2.75em, calc(6em - 1vw), 5em);
+  font-size: clamp(2.75em, calc(6em - 1vw), 5.5em);
 }
 .settings-options-wrapper::before {
   content: "";
@@ -48,52 +56,61 @@ canvas {
   background-color: rgb(255 255 255/43%);
   backdrop-filter: blur(10px);
 }
+
 .settings-options-wrapper {
   /* filter: drop-shadow(0px 4px 34px rgba(0, 0, 0, 0.51)); */
   box-shadow: 0px 4px 34px 2px rgb(0 0 0/0.51);
 }
+
 .settings-options-wrapper form {
   position: relative;
   display: grid;
   width: 98%;
   padding: 2em 1em;
-  /* grid-template-columns: 10% repeat(3,5em); */
   grid-template-columns: 40% 60%;
   place-items: center;
   box-shadow: 0px 4px 14px rgb(0 0 0/75%);
 }
+
 .settings-options-wrapper form > label {
   word-wrap: break-word;
   display: flex;
   align-items: center;
   justify-self: left;
 }
+
 .settings-options-wrapper form > div {
   display: flex;
   justify-content: space-between;
   margin: 0 0.4em;
 }
+
 .settings-options-wrapper form > div :first-child {
-  border-right: 1px white solid;
+  border-right: 2px rgba(255,255,255,0.5) solid;
 }
+
 .time > div::after,
 .break > div::after {
   position: absolute;
-  bottom: -50%;
+  bottom: -50%;            
   left: 50%;
   transform: translateX(-50%);
 }
+
 .time-hr::after,
 .break-hr::after {
   content: "hr";
+  color:rgba(0,0,0,0.7)
 }
 .time-min::after,
 .break-min::after {
   content: "min";
+  color:rgba(0,0,0,0.7)
 }
 .time-sec::after,
 .break-sec::after {
   content: "sec";
+  color:rgba(0,0,0,0.7)
 }
 
 .button-display > button {
@@ -117,7 +134,7 @@ canvas {
   background-color: rgba(255 0 0 /60%);
   color: white;
   padding: 2em 1em;
-  border-radius: 0.5em;
+  /* border-radius: 0.5em; */
   margin-top: 1em;
 }
 .entry-animation {
@@ -146,7 +163,6 @@ canvas {
 
 #help-section-wrapper {
   position: absolute;
-  display: grid;
   place-items: center;
   z-index: 10;
   height: 100%;
@@ -156,23 +172,62 @@ canvas {
   position: relative;
   display: grid;
   place-items: center;
-  background-color: rgba(var(--primary-color), 0.3);
+  /* background-color: rgba(var(--primary-color), 0.3); */
   backdrop-filter: blur(8px);
-  border-radius: 19px;
-  padding-bottom: 3em;
-  gap: 1em;
+  border-radius: 12px;
 }
-#help-section > button {
+#pseudo-section {
+  position: absolute;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+#pseudo-section::after {
+  position: absolute;
+  content: "";
+  background: linear-gradient(
+    to right,
+    rgba(255 255 255 / 0.1),
+    rgba(255 255 255 / 0)
+  );
+  height: 210%;
+  width: 22%;
+  z-index: 1000;
+  transform: rotateZ(30deg) translateX(0%);
+  transform-origin: left;
+  animation: shine 2s infinite ease-in both;
+}
+@keyframes shine {
+  0% {
+    transform: rotateZ(45deg) translateX(-500%);
+  }
+  /* 50%{
+  transform: rotateZ(45deg) translateX(-100%);
+    
+  }
+  75%{
+    transform: rotateZ(45deg) translateX(200%);
+  } */
+  100% {
+    transform: rotateZ(45deg) translateX(400%);
+  }
+}
+
+#help-section > header > button {
   position: absolute;
   right: 0%;
   top: 0;
   transform: translate(50%, -50%);
   z-index: 11;
 }
+
 #hacks {
   display: flex;
   flex-direction: column;
   gap: 1em;
+  padding: 2em 0 2em 0;
 }
 #help-section > header {
   width: 100%;
@@ -180,18 +235,24 @@ canvas {
   background: rgba(255, 255, 255, 0.19);
   backdrop-filter: blur(100px);
   padding: 1em 0;
-  color:white;
-  border-radius: 19px 19px 0 0;
+  color: white;
+  font-size: 1.3em;
+  border-radius: 12px 12px 0 0;
 }
 #hacks > li {
   list-style: none;
-  background-color: rgba(var(--bright-primary), 0.7);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.68);
+  /* background-color: rgba(var(--bright-primary), 0.7); */
+  filter: drop-shadow(0px 4px 118px #000000);
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.68);
+  border-radius: 3px;
+}
+#hacks > li > span {
+  font-size: 1.2em;
+}
+p.keys {
+  box-shadow: inset 1px -2px 6px 0 white;
+}
 
-}
-#hacks>li>span{
-  font-size:1.2em;
-}
 /* .hack {
   position: relative;
   padding: 1em 2em;
