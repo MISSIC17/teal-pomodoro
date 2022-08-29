@@ -64,16 +64,13 @@ export default function Settings({
         currentInputWrapper.parentNode.childNodes[
           wrapperIndex + 1
         ].childNodes[0].focus();
-      }
-      else if(
+      } else if (
         currentInputWrapper.childNodes[childIndex] ===
           currentInputWrapper.lastChild &&
         currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
           currentInputWrapper.parentNode.lastChild
-        
-      ){
-        document.querySelector('input#break-hr-0').focus();
-
+      ) {
+        document.querySelector("input#break-hr-0").focus();
       }
     } else if (direction === "backwards") {
       if (childIndex === 1) {
@@ -88,14 +85,15 @@ export default function Settings({
           wrapperIndex - 1
         ].childNodes[1].focus();
         // console.log(document.activeElement);
-      }else if(currentInputWrapper.childNodes[childIndex] ===
-        currentInputWrapper.firstChild &&
-      currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
-        currentInputWrapper.parentNode.firstChild)
-    {
-        document.querySelector('input#time-sec-1').focus();
+      } else if (
+        currentInputWrapper.childNodes[childIndex] ===
+          currentInputWrapper.firstChild &&
+        currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
+          currentInputWrapper.parentNode.firstChild
+      ) {
+        document.querySelector("input#time-sec-1").focus();
+      }
     }
-  }
   };
 
   const handleInput = (e, typeIndex, posIndex, setType) => {
@@ -167,14 +165,14 @@ export default function Settings({
         )}
       </div>
       <section
-        className={`settings-options-wrapper  grid justify-items-center gap-3
+        className={`settings-options-wrapper  grid justify-items-center
       absolute right-[${settingsPos.right}px] top-[${settingsPos.top}px] ${
           showSettings ? "" : "hidden"
         } p-3 z-10 `}
         style={{ right: `${settingsPos.right}px` }}
       >
-        <div className="settings-title relative w-fit px-4 shadow-[0px_4px_11px_0px_black]">
-          <p className="text-2xl px-8 py-2">Settings</p>
+        <div className="settings-title relative grid place-items-center lg:w-fit h-fit w-1/2 px-6 py-2 shadow-[0px_4px_11px_0px_black]">
+          <p className="lg:text-2xl lg:px-8 lg:py-2 text-xl px-6 py-1">Settings</p>
         </div>
         <form
           className="time relative w-[90%]"
@@ -225,29 +223,30 @@ export default function Settings({
         </form>
         <div
           className={`settings-separator relative z-10 my-4 ${
-            !isBreak ? "bg-teal" : "bg-brickred"
-          } w-2/3 h-1`}
+            !isBreak ? "bg-teal" : "bg-brickred" 
+          } w-2/3 h-1 items-center  self-center`}
         ></div>
         <section
           id="default-sessions-wrapper"
-          className="relative grid gap-5 justify-center align-middle flex-col"
+          className="relative grid gap-5 place-items-center justify-center align-middle flex-col w-full mt-3"
         >
           <div
             id="default-sessions-title"
-            className={`relative text-center w-[90%] justify-self-center px-4 py-4 ${
+            className={`grid relative text-center w-[90%] justify-self-center md:px-4 md:py-4 px-2 py-2 ${
               !isBreak ? "bg-teal-3" : "bg-brickred"
             } shadow-[0px_4px_11px_0px_black]`}
           >
-            <p className={`${!isBreak ? "text-black" : "text-white"}`}>
+            <p className={`grid place-items-center ${!isBreak ? "text-black" : "text-white"} text-xl`}>
               {" "}
               Default sessions
             </p>
           </div>
-          <div id="default-sessions" className="flex flex-row gap-4">
+          <div id="default-sessions" className="relative gap-4 ">
             {defaultSessions.map((defaultSession, index) => {
               return (
                 <DefaultSession
                   key={index}
+                  id={`default-session-${index}`}
                   time={defaultSession[0]}
                   breakTime={defaultSession[1]}
                   setTime={setTime}
@@ -262,4 +261,4 @@ export default function Settings({
       </section>
     </>
   );
-};
+}

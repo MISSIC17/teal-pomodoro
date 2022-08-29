@@ -57,6 +57,9 @@ canvas {
   backdrop-filter: blur(10px);
 }
 
+.settings-title {
+  font-family: "Oswald", sans-serif;
+}
 .settings-options-wrapper {
   /* filter: drop-shadow(0px 4px 34px rgba(0, 0, 0, 0.51)); */
   box-shadow: 0px 4px 34px 2px rgb(0 0 0/0.51);
@@ -66,14 +69,16 @@ canvas {
   position: relative;
   display: grid;
   width: 98%;
-  padding: 2em 1em;
+  padding: 1.5em 1em;
   grid-template-columns: 40% 60%;
   place-items: center;
   box-shadow: 0px 4px 14px rgb(0 0 0/75%);
+  height: fit-content;
+  margin: 1em 0;
 }
 
 .settings-options-wrapper form > label {
-  word-wrap: break-word;
+  white-space: nowrap;
   display: flex;
   align-items: center;
   justify-self: left;
@@ -86,13 +91,13 @@ canvas {
 }
 
 .settings-options-wrapper form > div :first-child {
-  border-right: 2px rgba(255,255,255,0.5) solid;
+  border-right: 2px rgba(255, 255, 255, 0.5) solid;
 }
 
 .time > div::after,
 .break > div::after {
   position: absolute;
-  bottom: -50%;            
+  bottom: -50%;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -100,17 +105,17 @@ canvas {
 .time-hr::after,
 .break-hr::after {
   content: "hr";
-  color:rgba(0,0,0,0.7)
+  color: rgba(0, 0, 0, 0.7);
 }
 .time-min::after,
 .break-min::after {
   content: "min";
-  color:rgba(0,0,0,0.7)
+  color: rgba(0, 0, 0, 0.7);
 }
 .time-sec::after,
 .break-sec::after {
   content: "sec";
-  color:rgba(0,0,0,0.7)
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .button-display > button {
@@ -199,6 +204,10 @@ canvas {
   transform-origin: left;
   animation: shine 2s infinite ease-in both;
 }
+
+#default-sessions {
+  display: flex;
+}
 @keyframes shine {
   0% {
     transform: rotateZ(45deg) translateX(-500%);
@@ -245,12 +254,39 @@ canvas {
   filter: drop-shadow(0px 4px 118px #000000);
   box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.68);
   border-radius: 3px;
+  padding: 0.75em 1em;
+  width: 95%;
+  align-self: center;
+  justify-self: center;
 }
 #hacks > li > span {
   font-size: 1.2em;
 }
 p.keys {
   box-shadow: inset 1px -2px 6px 0 white;
+}
+.button-display > button:hover {
+  transform: scale(1.05);
+}
+#settings-icon {
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+#settings-icon:hover {
+  transform: rotateZ(25deg);
+}
+#help-icon {
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+#help-icon:hover {
+  transform: scale(1.1);
+}
+.default-session:hover {
+  outline: 2px solid white;
+}
+.default-session-focus {
+  outline: 2px solid white;
 }
 
 /* .hack {

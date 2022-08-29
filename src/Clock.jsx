@@ -57,8 +57,10 @@ export default function CanvasCreator({
     let remainingMin = parseInt((remainingTime - remainingHr * 3600) / 60);
     let remainingSec = parseInt(
       remainingTime - remainingHr * 3600 - remainingMin * 60
-      );
-      document.title = `${formatter(remainingHr)}:${formatter(remainingMin)}:${formatter(remainingSec)} | ${(isBreak?'Break':'Pomodoro')}`;
+    );
+    document.title = `${formatter(remainingHr)}:${formatter(
+      remainingMin
+    )}:${formatter(remainingSec)} | ${isBreak ? "Break" : "Pomodoro"}`;
     document.querySelector(".hr").textContent = formatter(remainingHr);
     document.querySelector(".min").textContent = formatter(remainingMin);
     document.querySelector(".sec").textContent = formatter(remainingSec);
@@ -96,7 +98,7 @@ export default function CanvasCreator({
       showAlert(
         true,
         "warning",
-        "Session duration cannot be less than 20 minutes"
+        " Session duration cannot be less than 20 minutes"
       );
       setIsError(true);
     }
@@ -104,7 +106,7 @@ export default function CanvasCreator({
       showAlert(
         true,
         "warning",
-        "Break duration cannot be less than 5 minutes"
+        " Break duration cannot be less than 5 minutes"
       );
       setIsError(true);
     }
@@ -208,12 +210,16 @@ export default function CanvasCreator({
     p5.stroke(68, 71, 71, 100);
     p5.arc(0, 0, x, x, 0, 360);
     p5.stroke(255);
-    p5.strokeWeight((x / 40>10?x/40:10));
+    p5.strokeWeight(x / 40 > 10 ? x / 40 : 10);
     p5.arc(0, 0, x, x, 0, end);
     p5.stroke(255);
     p5.fill(255);
     p5.noStroke();
-    p5.circle((x / 2) * p5.cos(end), (x / 2) * p5.sin(end), x / 15);
+    p5.circle(
+      (x / 2) * p5.cos(end),
+      (x / 2) * p5.sin(end),
+      x / 15 > 25 ? x / 15 : 25
+    );
   };
 
   return <Sketch setup={setup} draw={draw} />;

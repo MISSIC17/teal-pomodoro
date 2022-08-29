@@ -5,7 +5,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 export default function Help({ showHelp, setShowHelp, isBreak, onMobile }) {
   const helpObj = [
     ["s", "Skip the session"],
-    ["p", "Pause/Resume the session"],
+    ["space", "Pause/Resume the session"],
     ["shift", "Open/Close the settings"],
     ["h", "Open/Close help"],
     ["m", "Stop/Start music"],

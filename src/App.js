@@ -81,9 +81,10 @@ function App() {
     setAlert({ show, type, msg });
   };
   const handleKeyPress = (e) => {
+    console.log(e.key)
     if (e.key === "s") {
       handleBreakChange();
-    } else if (e.key === "p") {
+    } else if (e.key === " ") {
       setIsPause(!isPause);
     } else if (e.shiftKey) {
       setShowSettings(!showSettings);
@@ -98,8 +99,8 @@ function App() {
   });
   return (
     <>
-      {alert.show && isError && (
-        <Alert {...alert} removeAlert={showAlert} isError={isError} />
+      {alert.show && (
+        <Alert {...alert} setAlert={setAlert} showAlert={showAlert} isError={isError} />
       )}
       {showHelp && (
         <Help showHelp={showHelp} setShowHelp={setShowHelp} isBreak={isBreak} onMobile={onMobile} />
@@ -125,6 +126,7 @@ function App() {
 
             <IconContext.Provider value={{ color: "white" }}>
             <MdLiveHelp
+            id="help-icon"
               className="h-10 w-10"
               onClick={() => setShowHelp(true)}
               />
@@ -183,7 +185,7 @@ function App() {
             </section>
           </div>
         </div>
-        <div className="spotify-section flex justify-center align-middle"></div>
+        <div className="spotify-section justify-center align-middle hidden"></div>
       </main>
     </>
   );
