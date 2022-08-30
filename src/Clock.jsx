@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sketch from "react-p5";
+import sound from './assets/bell.mp3';
 
 let elaspedTime = window.localStorage.getItem("elaspedTime") || 0;
 
@@ -71,6 +72,9 @@ export default function CanvasCreator({
       console.log(isBreak);
       elaspedTime = 0;
       localStorage.setItem("elaspedTime", 0);
+      let bell = new Audio(sound);
+      bell.volume = 0.2;
+      bell.play();
     }
   }, [remainingTime]);
 

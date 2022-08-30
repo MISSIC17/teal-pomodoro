@@ -52,7 +52,6 @@ export default function DefaultSession({
     };
     return timeObj;
   };
-  console.log(id);
   // useEffect(() => {
   //   if (currentSession === id) {
   //     document.querySelector(`#${id}`).classList.add("default-session-focus");

@@ -61,7 +61,6 @@ canvas {
   font-family: "Oswald", sans-serif;
 }
 .settings-options-wrapper {
-  /* filter: drop-shadow(0px 4px 34px rgba(0, 0, 0, 0.51)); */
   box-shadow: 0px 4px 34px 2px rgb(0 0 0/0.51);
 }
 
@@ -138,8 +137,7 @@ canvas {
   z-index: 69;
   background-color: rgba(255 0 0 /60%);
   color: white;
-  padding: 2em 1em;
-  /* border-radius: 0.5em; */
+  padding: 2em 2em;
   margin-top: 1em;
 }
 .entry-animation {
@@ -177,7 +175,6 @@ canvas {
   position: relative;
   display: grid;
   place-items: center;
-  /* background-color: rgba(var(--primary-color), 0.3); */
   backdrop-filter: blur(8px);
   border-radius: 12px;
 }
@@ -212,13 +209,6 @@ canvas {
   0% {
     transform: rotateZ(45deg) translateX(-500%);
   }
-  /* 50%{
-  transform: rotateZ(45deg) translateX(-100%);
-    
-  }
-  75%{
-    transform: rotateZ(45deg) translateX(200%);
-  } */
   100% {
     transform: rotateZ(45deg) translateX(400%);
   }
@@ -250,7 +240,6 @@ canvas {
 }
 #hacks > li {
   list-style: none;
-  /* background-color: rgba(var(--bright-primary), 0.7); */
   filter: drop-shadow(0px 4px 118px #000000);
   box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.68);
   border-radius: 3px;
@@ -288,9 +277,3 @@ p.keys {
 .default-session-focus {
   outline: 2px solid white;
 }
-
-/* .hack {
-  position: relative;
-  padding: 1em 2em;
-  text-align: center;
-} */
