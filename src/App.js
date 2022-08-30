@@ -18,12 +18,12 @@ function App() {
       1: 0,
     },
     min: {
-      0: 0,
+      0: 2,
       1: 0,
     },
     sec: {
-      0: 1,
-      1: 2,
+      0: 0,
+      1: 0,
     },
   });
   const [breakTime, setBreakTime] = useState({
@@ -33,10 +33,10 @@ function App() {
     },
     min: {
       0: 0,
-      1: 0,
+      1: 5,
     },
     sec: {
-      0: 1,
+      0: 0,
       1: 0,
     },
   });
@@ -61,7 +61,6 @@ function App() {
     })(navigator.userAgent || navigator.vendor || window.opera);
     return check;
   };
-  console.log(window.mobileCheck());
   const [onMobile, setOnMobile] = useState(window.mobileCheck());
   const [isBreak, setIsBreak] = useState(false);
   const [isPause, setIsPause] = useState(true);
@@ -81,13 +80,13 @@ function App() {
     setAlert({ show, type, msg });
   };
   const handleKeyPress = (e) => {
-    console.log(e.key)
     if (e.key === "s") {
       handleBreakChange();
     } else if (e.key === " ") {
       setIsPause(!isPause);
     } else if (e.shiftKey) {
       setShowSettings(!showSettings);
+      document.getElementById("time-hr-0").focus();
     } else if (e.key === "h") {
       setShowHelp(!showHelp);
     } else if (e.key === "m") {
@@ -100,10 +99,20 @@ function App() {
   return (
     <>
       {alert.show && (
-        <Alert {...alert} setAlert={setAlert} showAlert={showAlert} isError={isError} />
+        <Alert
+          {...alert}
+          setAlert={setAlert}
+          showAlert={showAlert}
+          isError={isError}
+        />
       )}
       {showHelp && (
-        <Help showHelp={showHelp} setShowHelp={setShowHelp} isBreak={isBreak} onMobile={onMobile} />
+        <Help
+          showHelp={showHelp}
+          setShowHelp={setShowHelp}
+          isBreak={isBreak}
+          onMobile={onMobile}
+        />
       )}
       <main
         className={`relative ${
@@ -121,17 +130,15 @@ function App() {
             setShowSettings={setShowSettings}
             isBreak={isBreak}
           />
-          {
-            !onMobile &&
-
+          {!onMobile && (
             <IconContext.Provider value={{ color: "white" }}>
-            <MdLiveHelp
-            id="help-icon"
-              className="h-10 w-10"
-              onClick={() => setShowHelp(true)}
+              <MdLiveHelp
+                id="help-icon"
+                className="h-10 w-10"
+                onClick={() => setShowHelp(true)}
               />
-          </IconContext.Provider>
-            }
+            </IconContext.Provider>
+          )}
           {/* <Help /> */}
         </nav>
         <div className="clock-section text-white relative grid place-items-center overflow-hidden">

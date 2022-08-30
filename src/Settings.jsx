@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { IconContext } from "react-icons";
 import { FiSettings } from "react-icons/fi";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -16,7 +16,21 @@ export default function Settings({
   setShowSettings,
   isBreak,
 }) {
-  // const [showSettings, setShowSettings] = useState(false);
+  const useOutsideAlerter = (ref) => {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setShowSettings(false);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  };
+  const settingsWrapper = useRef(null);
+  useOutsideAlerter(settingsWrapper);
   const [settingsPos, setSettingsPos] = useState({ right: "0", top: "0" });
   const types = ["hr", "min", "sec"];
   const defaultSessions = [
@@ -36,6 +50,10 @@ export default function Settings({
   }, [screenWidth]);
   const handleSettingsClick = (e) => {
     setShowSettings(!showSettings);
+    console.log(document.activeElement)
+    if(showSettings){
+      document.getElementById("time-hr-0").focus()
+    }
   };
 
   const changeFocus = (e, direction) => {
@@ -68,9 +86,18 @@ export default function Settings({
         currentInputWrapper.childNodes[childIndex] ===
           currentInputWrapper.lastChild &&
         currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
-          currentInputWrapper.parentNode.lastChild
+          currentInputWrapper.parentNode.lastChild &&
+        currentInputBox !== document.querySelector("#break-sec-1")
       ) {
         document.querySelector("input#break-hr-0").focus();
+      } else if (
+        currentInputWrapper.childNodes[childIndex] ===
+          currentInputWrapper.lastChild &&
+        currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
+          currentInputWrapper.parentNode.lastChild &&
+        currentInputBox === document.querySelector("#break-sec-1")
+      ) {
+        document.querySelector("input#time-hr-0").focus();
       }
     } else if (direction === "backwards") {
       if (childIndex === 1) {
@@ -89,9 +116,18 @@ export default function Settings({
         currentInputWrapper.childNodes[childIndex] ===
           currentInputWrapper.firstChild &&
         currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
-          currentInputWrapper.parentNode.firstChild
+          currentInputWrapper.parentNode.firstChild &&
+        currentInputBox !== document.querySelector("#time-hr-0")
       ) {
         document.querySelector("input#time-sec-1").focus();
+      } else if (
+        currentInputWrapper.childNodes[childIndex] ===
+          currentInputWrapper.firstChild &&
+        currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
+          currentInputWrapper.parentNode.firstChild &&
+        currentInputBox === document.querySelector("#time-hr-0")
+      ) {
+        document.querySelector("input#break-sec-1").focus();
       }
     }
   };
@@ -158,13 +194,15 @@ export default function Settings({
           <IconContext.Provider value={{ color: "red" }}>
             <AiFillCloseCircle
               id="settings-close-icon"
-              className="w-10 h-10 relative z-50"
+              className="w-10 h-10 relative z-50 transition-all duration-75 ease-linear"
               onClick={handleSettingsClick}
             />
           </IconContext.Provider>
         )}
       </div>
       <section
+        ref={settingsWrapper}
+        id="settings-options-wrapper"
         className={`settings-options-wrapper  grid justify-items-center
       absolute right-[${settingsPos.right}px] top-[${settingsPos.top}px] ${
           showSettings ? "" : "hidden"
@@ -172,7 +210,9 @@ export default function Settings({
         style={{ right: `${settingsPos.right}px` }}
       >
         <div className="settings-title relative grid place-items-center lg:w-fit h-fit w-1/2 px-6 py-2 shadow-[0px_4px_11px_0px_black]">
-          <p className="lg:text-2xl lg:px-8 lg:py-2 text-xl px-6 py-1">Settings</p>
+          <p className="lg:text-2xl lg:px-8 lg:py-2 text-xl px-6 py-1">
+            Settings
+          </p>
         </div>
         <form
           className="time relative w-[90%]"
@@ -223,7 +263,7 @@ export default function Settings({
         </form>
         <div
           className={`settings-separator relative z-10 my-4 ${
-            !isBreak ? "bg-teal" : "bg-brickred" 
+            !isBreak ? "bg-teal" : "bg-brickred"
           } w-2/3 h-1 items-center  self-center`}
         ></div>
         <section
@@ -236,7 +276,11 @@ export default function Settings({
               !isBreak ? "bg-teal-3" : "bg-brickred"
             } shadow-[0px_4px_11px_0px_black]`}
           >
-            <p className={`grid place-items-center ${!isBreak ? "text-black" : "text-white"} text-xl`}>
+            <p
+              className={`grid place-items-center ${
+                !isBreak ? "text-black" : "text-white"
+              } text-xl`}
+            >
               {" "}
               Default sessions
             </p>
@@ -262,3 +306,4 @@ export default function Settings({
     </>
   );
 }
+// }

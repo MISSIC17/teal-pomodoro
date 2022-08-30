@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { formatter } from "./Clock";
 export default function DefaultSession({
   id,
@@ -9,25 +9,8 @@ export default function DefaultSession({
   isBreak,
   setIsBreak,
 }) {
-  const [currentSession, setCurrentSession] = useState();
-  // document.querySelectorAll(".default-session").forEach((item) => {
-  //   item.addEventListener("click", () => {
-  //     let currSession = document.getElementById(item.id);
-  //     currSession.classList.add("default-session-focus");
-  //     document.getElementById(
-  //       "display"
-  //     ).innerHTML = `<img src="/assets/${item.id}.png">`;
-  //     document.addEventListener("click", (event) => {
-  //       var isClickInsideElement = currSession.contains(event.target);
-  //       if (!isClickInsideElement) {
-  //         currSession.classList.remove("default-session-focus");
-  //       }
-  //     });
-  //   });
-  // });
   const handleClick = () => {
     //change the time there on the clock
-    setCurrentSession(id);
     setIsBreak(false);
     setTime(secondsToHrMinSec(time * 60));
     setBreakTime(secondsToHrMinSec(breakTime * 60));

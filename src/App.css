@@ -64,6 +64,9 @@ canvas {
   box-shadow: 0px 4px 34px 2px rgb(0 0 0/0.51);
 }
 
+#settings-close-icon:hover{
+  filter:brightness(0.7);
+}
 .settings-options-wrapper form {
   position: relative;
   display: grid;
@@ -171,6 +174,9 @@ canvas {
   height: 100%;
   width: 100%;
 }
+#help-close:hover{
+  filter:brightness(0.7);
+}
 #help-section {
   position: relative;
   display: grid;
@@ -247,6 +253,7 @@ canvas {
   width: 95%;
   align-self: center;
   justify-self: center;
+  transform-style: preserve-3d;
 }
 #hacks > li > span {
   font-size: 1.2em;

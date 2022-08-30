@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { MdLiveHelp } from "react-icons/md";
 import { IconContext } from "react-icons";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -11,6 +11,22 @@ export default function Help({ showHelp, setShowHelp, isBreak, onMobile }) {
     ["m", "Stop/Start music"],
   ];
 
+  const HandleOutsideClick = (ref) => {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setShowHelp(false);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  };
+  const helpSection = useRef(null);
+  HandleOutsideClick(helpSection);
+
   return (
     <>
       {showHelp && (
@@ -20,6 +36,7 @@ export default function Help({ showHelp, setShowHelp, isBreak, onMobile }) {
         >
           <div
             id="help-section"
+            ref={helpSection}
             className={`${!isBreak ? "bg-teal" : "bg-brickred"} bg-opacity-30`}
           >
             <div id="pseudo-section"></div>
@@ -34,7 +51,10 @@ export default function Help({ showHelp, setShowHelp, isBreak, onMobile }) {
               ></div>
               <button id="close-help" onClick={() => setShowHelp(false)}>
                 <IconContext.Provider value={{ color: "#ff0000" }}>
-                  <AiFillCloseCircle className="h-12 w-12" />
+                  <AiFillCloseCircle
+                    id="help-close"
+                    className="h-12 w-12 transition-all duration-75"
+                  />
                 </IconContext.Provider>
               </button>
             </header>
@@ -43,6 +63,7 @@ export default function Help({ showHelp, setShowHelp, isBreak, onMobile }) {
                 return (
                   <li
                     key={`hack-${index}`}
+                    id="hack"
                     className={`grid grid-cols-[20%_1%_auto] items-center py-3 
                     bg-teal
                     ${!isBreak ? "bg-teal" : "bg-brickred"} mx-8 `}
