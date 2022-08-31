@@ -12,20 +12,23 @@ import { AiFillPlayCircle } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { MdLiveHelp } from "react-icons/md";
 function App() {
-  const [time, setTime] = useState({
-    hr: {
-      0: 0,
-      1: 0,
-    },
-    min: {
-      0: 2,
-      1: 0,
-    },
-    sec: {
-      0: 0,
-      1: 0,
-    },
+  const [time, setTime] = useState(() => {
+    return {
+      hr: {
+        0: 0,
+        1: 0,
+      },
+      min: {
+        0: 2,
+        1: 0,
+      },
+      sec: {
+        0: 0,
+        1: 0,
+      },
+    };
   });
+  // const [time, setTime] = useState({});
   const [breakTime, setBreakTime] = useState({
     hr: {
       0: 0,
@@ -40,12 +43,26 @@ function App() {
       1: 0,
     },
   });
-  // useEffect(()=>{
-  //  let interval =  setInterval(()=>{
-  //     document.title = new Date().getTime();
-  //   })
-  // return () => clearInterval(interval) ;
-  // })
+  // useEffect(() => {
+  //   setTime((prevState)=>{
+  //     {
+
+  //       hr: {
+  //         0: 0,
+  //         1: 0,
+  //       },
+  //       min: {
+  //         0: 2,
+  //         1: 0,
+  //       },
+  //       sec: {
+  //         0: 0,
+  //         1: 0,
+  //       },
+  //     }
+  //   });
+  //   console.log('hi;')
+  // }, []);
   window.mobileCheck = function () {
     let check = false;
     (function (a) {

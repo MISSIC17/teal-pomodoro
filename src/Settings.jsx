@@ -16,7 +16,7 @@ export default function Settings({
   setShowSettings,
   isBreak,
 }) {
-  const useOutsideAlerter = (ref) => {
+  const UseOutsideAlerter = (ref) => {
     useEffect(() => {
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
@@ -30,7 +30,7 @@ export default function Settings({
     }, [ref]);
   };
   const settingsWrapper = useRef(null);
-  useOutsideAlerter(settingsWrapper);
+  UseOutsideAlerter(settingsWrapper);
   const [settingsPos, setSettingsPos] = useState({ right: "0", top: "0" });
   const types = ["hr", "min", "sec"];
   const defaultSessions = [
@@ -56,125 +56,124 @@ export default function Settings({
     }
   };
 
-  const changeFocus = (e, direction) => {
-    // direction == 0 -> focus on previous input
-    // direction == 1 -> focus on next input
+  // const changeFocus = (e, direction) => { // direction == 0 -> focus on previous input
+  //   // direction == 1 -> focus on next input
 
-    let currentInputBox = e.target;
-    let currentInputWrapper = e.target.parentNode;
-    let childIndex = Array.prototype.indexOf.call(
-      currentInputWrapper.children,
-      currentInputBox
-    );
-    let wrapperIndex = Array.prototype.indexOf.call(
-      currentInputWrapper.parentElement.children,
-      currentInputWrapper
-    );
-    if (direction === "forwards") {
-      if (childIndex === 0) {
-        currentInputWrapper.childNodes[childIndex + 1].focus();
-      } else if (
-        currentInputWrapper.childNodes[childIndex] ===
-          currentInputWrapper.lastChild &&
-        currentInputWrapper.parentNode.childNodes[wrapperIndex] !==
-          currentInputWrapper.parentNode.lastChild
-      ) {
-        currentInputWrapper.parentNode.childNodes[
-          wrapperIndex + 1
-        ].childNodes[0].focus();
-      } else if (
-        currentInputWrapper.childNodes[childIndex] ===
-          currentInputWrapper.lastChild &&
-        currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
-          currentInputWrapper.parentNode.lastChild &&
-        currentInputBox !== document.querySelector("#break-sec-1")
-      ) {
-        document.querySelector("input#break-hr-0").focus();
-      } else if (
-        currentInputWrapper.childNodes[childIndex] ===
-          currentInputWrapper.lastChild &&
-        currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
-          currentInputWrapper.parentNode.lastChild &&
-        currentInputBox === document.querySelector("#break-sec-1")
-      ) {
-        document.querySelector("input#time-hr-0").focus();
-      }
-    } else if (direction === "backwards") {
-      if (childIndex === 1) {
-        currentInputWrapper.childNodes[childIndex - 1].focus();
-      } else if (
-        currentInputWrapper.childNodes[childIndex] ===
-          currentInputWrapper.firstChild &&
-        currentInputWrapper.parentNode.childNodes[wrapperIndex] !==
-          currentInputWrapper.parentNode.firstChild
-      ) {
-        currentInputWrapper.parentNode.childNodes[
-          wrapperIndex - 1
-        ].childNodes[1].focus();
-        // console.log(document.activeElement);
-      } else if (
-        currentInputWrapper.childNodes[childIndex] ===
-          currentInputWrapper.firstChild &&
-        currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
-          currentInputWrapper.parentNode.firstChild &&
-        currentInputBox !== document.querySelector("#time-hr-0")
-      ) {
-        document.querySelector("input#time-sec-1").focus();
-      } else if (
-        currentInputWrapper.childNodes[childIndex] ===
-          currentInputWrapper.firstChild &&
-        currentInputWrapper.parentNode.childNodes[wrapperIndex] ===
-          currentInputWrapper.parentNode.firstChild &&
-        currentInputBox === document.querySelector("#time-hr-0")
-      ) {
-        document.querySelector("input#break-sec-1").focus();
-      }
-    }
-  };
+  //   let currInputBox = e.target;
+  //   let currInputWrapper = e.target.parentNode;
+  //   let childIndex = Array.prototype.indexOf.call(
+  //     currInputWrapper.children,
+  //     currInputBox
+  //   );
+  //   let wrapperIndex = Array.prototype.indexOf.call(
+  //     currInputWrapper.parentElement.children,
+  //     currInputWrapper
+  //   );
+  //   if (direction === "forwards") {
+  //     if (childIndex === 0) {
+  //       currInputWrapper.childNodes[childIndex + 1].focus();
+  //     } else if (
+  //       currInputWrapper.childNodes[childIndex] ===
+  //         currInputWrapper.lastChild &&
+  //       currInputWrapper.parentNode.childNodes[wrapperIndex] !==
+  //         currInputWrapper.parentNode.lastChild
+  //     ) {
+  //       currInputWrapper.parentNode.childNodes[
+  //         wrapperIndex + 1
+  //       ].childNodes[0].focus();
+  //     } else if (
+  //       currInputWrapper.childNodes[childIndex] ===
+  //         currInputWrapper.lastChild &&
+  //       currInputWrapper.parentNode.childNodes[wrapperIndex] ===
+  //         currInputWrapper.parentNode.lastChild &&
+  //       currInputBox !== document.querySelector("#break-sec-1")
+  //     ) {
+  //       document.querySelector("input#break-hr-0").focus();
+  //     } else if (
+  //       currInputWrapper.childNodes[childIndex] ===
+  //         currInputWrapper.lastChild &&
+  //       currInputWrapper.parentNode.childNodes[wrapperIndex] ===
+  //         currInputWrapper.parentNode.lastChild &&
+  //       currInputBox === document.querySelector("#break-sec-1")
+  //     ) {
+  //       document.querySelector("input#time-hr-0").focus();
+  //     }
+  //   } else if (direction === "backwards") {
+  //     if (childIndex === 1) {
+  //       currInputWrapper.childNodes[childIndex - 1].focus();
+  //     } else if (
+  //       currInputWrapper.childNodes[childIndex] ===
+  //         currInputWrapper.firstChild &&
+  //       currInputWrapper.parentNode.childNodes[wrapperIndex] !==
+  //         currInputWrapper.parentNode.firstChild
+  //     ) {
+  //       currInputWrapper.parentNode.childNodes[
+  //         wrapperIndex - 1
+  //       ].childNodes[1].focus();
+  //       // console.log(document.activeElement);
+  //     } else if (
+  //       currInputWrapper.childNodes[childIndex] ===
+  //         currInputWrapper.firstChild &&
+  //       currInputWrapper.parentNode.childNodes[wrapperIndex] ===
+  //         currInputWrapper.parentNode.firstChild &&
+  //       currInputBox !== document.querySelector("#time-hr-0")
+  //     ) {
+  //       document.querySelector("input#time-sec-1").focus();
+  //     } else if (
+  //       currInputWrapper.childNodes[childIndex] ===
+  //         currInputWrapper.firstChild &&
+  //       currInputWrapper.parentNode.childNodes[wrapperIndex] ===
+  //         currInputWrapper.parentNode.firstChild &&
+  //       currInputBox === document.querySelector("#time-hr-0")
+  //     ) {
+  //       document.querySelector("input#break-sec-1").focus();
+  //     }
+  //   }
+  // };
 
-  const handleInput = (e, typeIndex, posIndex, setType) => {
-    // e.target.addEventListener("keydown", (event) => {
-    //   if (event.key > -1 || event.key < 10) {
-    //     console.log(typeof event.key)
-    //     e.target.value = event.key;
-    //   }
-    // });
-    let key = Object.keys(time)[typeIndex];
+  // const handleInput = (e, typeIndex, posIndex, setType) => {
+  //   // e.target.addEventListener("keydown", (event) => {
+  //   //   if (event.key > -1 || event.key < 10) {
+  //   //     console.log(typeof event.key)
+  //   //     e.target.value = event.key;
+  //   //   }
+  //   // });
+  //   let key = Object.keys(time)[typeIndex];
 
-    if (e.target.value.length > 1) {
-      e.target.value = parseInt(e.target.value.slice(1));
-      setType((prevState) => ({
-        ...prevState,
-        [key]: {
-          ...prevState[key],
-          [posIndex]: parseInt(e.target.value),
-        },
-      }));
-      changeFocus(e, "forwards");
-    } else {
-      setType((prevState) => ({
-        ...prevState,
-        [key]: {
-          ...prevState[key],
-          [posIndex]: parseInt(e.target.value),
-        },
-      }));
-    }
-  };
+  //   if (e.target.value.length > 1) {
+  //     e.target.value = parseInt(e.target.value.slice(1));
+  //     setType((prevState) => ({
+  //       ...prevState,
+  //       [key]: {
+  //         ...prevState[key],
+  //         [posIndex]: parseInt(e.target.value),
+  //       },
+  //     }));
+  //     changeFocus(e, "forwards");
+  //   } else {
+  //     setType((prevState) => ({
+  //       ...prevState,
+  //       [key]: {
+  //         ...prevState[key],
+  //         [posIndex]: parseInt(e.target.value),
+  //       },
+  //     }));
+  //   }
+  // };
 
-  const handleFocus = (e) => {
-    e.target.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowRight") {
-        changeFocus(e, "forwards");
-      } else if (event.key === "ArrowLeft") {
-        changeFocus(e, "backwards");
-      }
-      if (event.key > -1 || event.key < 10) {
-        console.log(typeof event.key);
-        e.target.value = event.key;
-      }
-    });
-  };
+  // const handleFocus = (e) => {
+  //   e.target.addEventListener("keydown", (event) => {
+  //     if (event.key === "ArrowRight") {
+  //       changeFocus(e, "forwards");
+  //     } else if (event.key === "ArrowLeft") {
+  //       changeFocus(e, "backwards");
+  //     }
+  //     if (event.key > -1 || event.key < 10) {
+  //       console.log(typeof event.key);
+  //       e.target.value = event.key;
+  //     }
+  //   });
+  // };
   return (
     <>
       <div
@@ -232,8 +231,8 @@ export default function Settings({
                   keyName={type}
                   keyIndex={index}
                   setType={setTime}
-                  handleFocus={handleFocus}
-                  handleInput={handleInput}
+                  // handleFocus={handleFocus}
+                  // handleInput={handleInput}
                 />
               );
             })}
@@ -254,8 +253,8 @@ export default function Settings({
                   keyName={type}
                   keyIndex={index}
                   setType={setBreakTime}
-                  handleFocus={handleFocus}
-                  handleInput={handleInput}
+                  // handleFocus={handleFocus}
+                  // handleInput={handleInput}
                 />
               );
             })}

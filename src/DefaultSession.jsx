@@ -35,28 +35,6 @@ export default function DefaultSession({
     };
     return timeObj;
   };
-  // useEffect(() => {
-  //   if (currentSession === id) {
-  //     document.querySelector(`#${id}`).classList.add("default-session-focus");
-  //   } else {
-  //     console.log("HI")
-  //     document
-  //       .querySelector(`#${id}`)
-  //       .classList.remove("default-session-focus");
-  //   }
-  // },[currentSession]);
-  // document.querySelectorAll(".default-session").forEach((item) => {
-  //   item.addEventListener("click", () => {
-  //     let currentSession = document.getElementById(item.id);
-  //     currentSession.classList.add('default-session-focus');
-  //     document.addEventListener("click", (e) => {
-  //       var isClickInsideElement = currentSession.contains(e.target);
-  //       if (!isClickInsideElement) {
-  //         currentSession.classList.remove('default-session-focus')
-  //       }
-  //     });
-  //   });
-  // });
   return (
     <section
       id={id}

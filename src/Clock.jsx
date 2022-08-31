@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sketch from "react-p5";
-import sound from './assets/bell.mp3';
+import sound from "./assets/bell.mp3";
 
 let elaspedTime = window.localStorage.getItem("elaspedTime") || 0;
 
@@ -34,7 +34,7 @@ export default function CanvasCreator({
   let sessionSeconds = !isBreak
     ? timeObjToSeconds(time)
     : timeObjToSeconds(breakTime);
-  const minSeconds = !isBreak ? 12 : 3;
+  const minSeconds = !isBreak ? 1200 : 300;
   const [remainingTime, setRemainingTime] = useState(sessionSeconds);
 
   useEffect(() => {
@@ -69,7 +69,6 @@ export default function CanvasCreator({
       setIsBreak(!isBreak);
       setIsPause(false);
       setRemainingTime(0);
-      console.log(isBreak);
       elaspedTime = 0;
       localStorage.setItem("elaspedTime", 0);
       let bell = new Audio(sound);
@@ -98,15 +97,15 @@ export default function CanvasCreator({
   }, [time]);
 
   useEffect(() => {
-    if (timeObjToSeconds(time) < 9) {
+    if (timeObjToSeconds(time) < 1200) {
       showAlert(
         true,
         "warning",
         " Session duration cannot be less than 20 minutes"
-      );
-      setIsError(true);
+        );
+        setIsError(true);
     }
-    if (timeObjToSeconds(breakTime) < 3) {
+    if (timeObjToSeconds(breakTime) < 300) {
       showAlert(
         true,
         "warning",
@@ -114,55 +113,11 @@ export default function CanvasCreator({
       );
       setIsError(true);
     }
-    if (timeObjToSeconds(time) >= 8 && timeObjToSeconds(breakTime) >= 3) {
+    if (timeObjToSeconds(time) >= 1200 && timeObjToSeconds(breakTime) >= 300) {
       setIsError(false);
+      showAlert(false,'','');
     }
   }, [time, breakTime]);
-
-  // useEffect(() => {
-  //   let interval = setInterval(() => {
-  //     if (!isError && remainingTime === 0) {
-  //       setIsBreak(!isBreak);
-  //       setIsPause(false);
-  //       setRemainingTime(0);
-  //       elaspedTime = 0;
-  //       localStorage.setItem("elaspedTime", 0);
-  //       console.log("Work done");
-  //     }
-  //    console.log("hello") ;
-  //     let elaspedHr = parseInt(elaspedTime / 3600);
-  //     let elaspedMin = parseInt((elaspedTime - elaspedHr * 3600) / 60);
-  //     let elaspedSec = parseInt(
-  //       elaspedTime - elaspedMin * 60 - elaspedHr * 3600
-  //     );
-  //     let remainingHr = parseInt(remainingTime / 3600);
-  //     let remainingMin = parseInt((remainingTime - remainingHr * 3600) / 60);
-  //     let remainingSec = parseInt(
-  //       remainingTime - remainingHr * 3600 - remainingMin * 60
-  //     );
-  //     console.log(remainingTime);
-  //     // document.title = remainingTime;
-  //     document.querySelector(".hr").textContent = formatter(remainingHr);
-  //     document.querySelector(".min").textContent = formatter(remainingMin);
-  //     document.querySelector(".sec").textContent = formatter(remainingSec);
-  //   }, 1000);
-  //   return () => clearInterval(interval);
-  // },[isPause,isBreak]);
-
-  // useEffect(() => {
-  //   // let remainingTime = parseInt(sessionSeconds - elaspedTime);
-  //   // let remainingHr = parseInt(remainingTime / 3600);
-  //   // let remainingMin = parseInt((remainingTime - remainingHr * 3600) / 60);
-  //   // let remainingSec = parseInt(
-  //   //   remainingTime - remainingHr * 3600 - remainingMin * 60
-  //   // );
-  // if (!isError && sessionSeconds === elaspedTime) {
-  //   setRemainingTime(0);
-  //   setIsPause(true);
-  //   setIsBreak(!isBreak);
-  // }
-  // }, [remainingTime]);
-  // });
 
   const setup = (p5, canvasParentRef) => {
     if (p5.windowWidth >= 600) {
@@ -185,28 +140,7 @@ export default function CanvasCreator({
     p5.translate(p5.width / 2, p5.height / 2);
     setRemainingTime(parseInt(sessionSeconds - elaspedTime));
     p5.rotate(-90);
-    // let elaspedHr = parseInt(elaspedTime / 3600);
-    // let elaspedMin = parseInt((elaspedTime - elaspedHr * 3600) / 60);
-    // let elaspedSec = parseInt(elaspedTime - elaspedMin * 60 - elaspedHr * 3600);
-    // let remainingHr = parseInt(remainingTime / 3600);
-    // let remainingMin = parseInt((remainingTime - remainingHr * 3600) / 60);
-    // let remainingSec = parseInt(
-    //   remainingTime - remainingHr * 3600 - remainingMin * 60
-    // );
-    // if (remainingTime === 0) {
-    //   console.log("Ho yetai");
-    //   // setIsBreak(!isBreak);
-    // }
-    // if (sessionSeconds !== 0 && sessionSeconds === elaspedTime) {
-    //   remainingSec = 0;
-    //   setIsPause(true);
-    //   setIsBreak(!isBreak);
-    // }
     p5.noFill();
-
-    // document.querySelector(".hr").textContent = formatter(remainingHr);
-    // document.querySelector(".min").textContent = formatter(remainingMin);
-    // document.querySelector(".sec").textContent = formatter(remainingSec);
 
     let end = p5.map(elaspedTime, 0, sessionSeconds, 0, 360);
     let x = p5.width - 100 >= 600 ? 600 : p5.width - 50;
