@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { IconContext } from "react-icons";
 import { FiSettings } from "react-icons/fi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosTimer } from "react-icons/io";
 import Field from "./Field";
 import DefaultSession from "./DefaultSession";
+import { TimeContext } from "./App";
 
 export default function Settings({
   time,
@@ -16,6 +17,14 @@ export default function Settings({
   setShowSettings,
   isBreak,
 }) {
+  const {
+    tyam,
+    breakTyam,
+    isBreakTyam,
+    setTyam,
+    setBreakTyam,
+    setIsBreakTyam,
+  } = useContext(TimeContext);
   const UseOutsideAlerter = (ref) => {
     useEffect(() => {
       function handleClickOutside(event) {
@@ -50,9 +59,9 @@ export default function Settings({
   }, [screenWidth]);
   const handleSettingsClick = (e) => {
     setShowSettings(!showSettings);
-    console.log(document.activeElement)
-    if(showSettings){
-      document.getElementById("time-hr-0").focus()
+    console.log(document.activeElement);
+    if (showSettings) {
+      document.getElementById("time-hr-0").focus();
     }
   };
 
@@ -204,8 +213,8 @@ export default function Settings({
         id="settings-options-wrapper"
         className={`settings-options-wrapper  grid justify-items-center
       absolute right-[${settingsPos.right}px] top-[${settingsPos.top}px] ${
-          showSettings ? "" : "hidden"
-        } p-3 z-10 `}
+        showSettings ? "" : "hidden"
+      } p-3 z-10 `}
         style={{ right: `${settingsPos.right}px` }}
       >
         <div className="settings-title relative grid place-items-center lg:w-fit h-fit w-1/2 px-6 py-2 shadow-[0px_4px_11px_0px_black]">

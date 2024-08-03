@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { formatter } from "./Clock";
+import { TimeContext } from "./App";
+import { secondsToHrMinSec } from "./utils/helpers";
 export default function DefaultSession({
   id,
   time,
@@ -9,31 +11,22 @@ export default function DefaultSession({
   isBreak,
   setIsBreak,
 }) {
+  const {
+    tyam,
+    breakTyam,
+    isBreakTyam,
+    setBreakTyam,
+    setTyam,
+    setIsBreakTyam,
+  } = useContext(TimeContext);
   const handleClick = () => {
     //change the time there on the clock
     setIsBreak(false);
+    setIsBreakTyam(false);
     setTime(secondsToHrMinSec(time * 60));
+    setTyam(time * 60);
     setBreakTime(secondsToHrMinSec(breakTime * 60));
-  };
-  const secondsToHrMinSec = (totalSeconds) => {
-    let hr = formatter(parseInt(totalSeconds / 3600));
-    let min = formatter(parseInt((totalSeconds - hr * 3600) / 60));
-    let sec = formatter(parseInt(totalSeconds - hr * 3600 - min * 60));
-    const timeObj = {
-      hr: {
-        0: hr[0],
-        1: hr[1],
-      },
-      min: {
-        0: min[0],
-        1: min[1],
-      },
-      sec: {
-        0: sec[0],
-        1: sec[1],
-      },
-    };
-    return timeObj;
+    setBreakTyam(breakTime * 60);
   };
   return (
     <section
@@ -48,13 +41,12 @@ export default function DefaultSession({
         <span>&nbsp;+&nbsp;</span>
         <span className="lg:text-3xl sm:text-2xl ">{breakTime}</span>min
       </p>
-      <p
-        className={` bottom-2 ${
-          !isBreak ? "text-teal-2" : "text-brickred-1"
-        } shadow-inner `}
-      >
-        session
-      </p>
+      {/* <p */}
+      {/*   className={` bottom-2 ${!isBreak ? "text-teal-2" : "text-white/50" */}
+      {/*     } shadow-inner `} */}
+      {/* > */}
+      {/*   session */}
+      {/* </p> */}
     </section>
   );
 }

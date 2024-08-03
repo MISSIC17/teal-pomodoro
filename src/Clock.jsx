@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Sketch from "react-p5";
 import sound from "./assets/bell.mp3";
-
+import { timeObjToSeconds, formatter } from "./utils/helpers";
+import { TimeContext } from "./App";
 let elaspedTime = window.localStorage.getItem("elaspedTime") || 0;
-
-export function formatter(digit) {
-  if (digit.toString().length === 1) {
-    return "0" + digit.toString();
-  }
-  return digit.toString();
-}
+let elaspedTyam = window.localStorage.getItem("elaspedTyam") || 0;
 
 export default function CanvasCreator({
   time,
@@ -23,19 +18,29 @@ export default function CanvasCreator({
   setIsError,
 }) {
   // let currentTimeObj = !isBreak ? time : breakTime;
-  const timeObjToSeconds = (timeObj) => {
-    let hr = parseInt(timeObj.hr[0].toString() + timeObj.hr[1].toString());
-    let min = parseInt(timeObj.min[0].toString() + timeObj.min[1].toString());
-    let sec = parseInt(timeObj.sec[0].toString() + timeObj.sec[1].toString());
-    let totalSeconds = parseInt(hr) * 3600 + parseInt(min) * 60 + parseInt(sec);
-    return totalSeconds;
-  };
+
+  const {
+    tyam,
+    breakTyam,
+    isBreakTyam,
+    setBreakTyam,
+    setTyam,
+    setIsBreakTyam,
+    isPaws,
+    setIsPaws,
+    isErr,
+    setIsErr,
+  } = useContext(TimeContext);
 
   let sessionSeconds = !isBreak
     ? timeObjToSeconds(time)
     : timeObjToSeconds(breakTime);
   const minSeconds = !isBreak ? 1200 : 300;
   const [remainingTime, setRemainingTime] = useState(sessionSeconds);
+  const [remainingTyam, setRemainingTyam] = useState(tyam);
+
+  let sessionSexs = !isBreakTyam ? tyam : breakTyam;
+  const minSexs = !isBreakTyam ? 1200 : 300; // minimum about of time for a session
 
   useEffect(() => {
     let interval = setInterval(() => {
@@ -43,10 +48,11 @@ export default function CanvasCreator({
         elaspedTime++;
         localStorage.setItem("elaspedTime", elaspedTime);
       }
+
       let elaspedHr = parseInt(elaspedTime / 3600);
       let elaspedMin = parseInt((elaspedTime - elaspedHr * 3600) / 60);
       let elaspedSec = parseInt(
-        elaspedTime - elaspedMin * 60 - elaspedHr * 3600
+        elaspedTime - elaspedMin * 60 - elaspedHr * 3600,
       );
       setRemainingTime(parseInt(sessionSeconds - elaspedTime));
     }, 1000);
@@ -57,10 +63,10 @@ export default function CanvasCreator({
     let remainingHr = parseInt(remainingTime / 3600);
     let remainingMin = parseInt((remainingTime - remainingHr * 3600) / 60);
     let remainingSec = parseInt(
-      remainingTime - remainingHr * 3600 - remainingMin * 60
+      remainingTime - remainingHr * 3600 - remainingMin * 60,
     );
     document.title = `${formatter(remainingHr)}:${formatter(
-      remainingMin
+      remainingMin,
     )}:${formatter(remainingSec)} | ${isBreak ? "Break" : "Pomodoro"}`;
     document.querySelector(".hr").textContent = formatter(remainingHr);
     document.querySelector(".min").textContent = formatter(remainingMin);
@@ -96,29 +102,52 @@ export default function CanvasCreator({
     }
   }, [time]);
 
+  useEffect(() => {}, [tyam]);
   useEffect(() => {
     if (timeObjToSeconds(time) < 1200) {
       showAlert(
         true,
         "warning",
-        " Session duration cannot be less than 20 minutes"
-        );
-        setIsError(true);
+        " Session duration cannot be less than 20 minutes",
+      );
+      setIsError(true);
     }
     if (timeObjToSeconds(breakTime) < 300) {
       showAlert(
         true,
         "warning",
-        " Break duration cannot be less than 5 minutes"
+        " Break duration cannot be less than 5 minutes",
       );
       setIsError(true);
     }
     if (timeObjToSeconds(time) >= 1200 && timeObjToSeconds(breakTime) >= 300) {
       setIsError(false);
-      showAlert(false,'','');
+      showAlert(false, "", "");
     }
   }, [time, breakTime]);
 
+  useEffect(() => {
+    if (tyam < 1200) {
+      showAlert(
+        true,
+        "warning",
+        " Session duration cannot be less than 20 minutes",
+      );
+      setIsError(true);
+    }
+    if (timeObjToSeconds(breakTime) < 300) {
+      showAlert(
+        true,
+        "warning",
+        " Break duration cannot be less than 5 minutes",
+      );
+      setIsError(true);
+    }
+    if (timeObjToSeconds(time) >= 1200 && timeObjToSeconds(breakTime) >= 300) {
+      setIsError(false);
+      showAlert(false, "", "");
+    }
+  }, [tyam, breakTyam]);
   const setup = (p5, canvasParentRef) => {
     if (p5.windowWidth >= 600) {
       let canvasHeight = (p5.windowHeight / 100) * 69;
@@ -132,17 +161,23 @@ export default function CanvasCreator({
     p5.angleMode(p5.DEGREES);
   };
   const draw = (p5) => {
-    if (!isBreak) {
+    // if (!isBreak) {
+    //   p5.background(68, 137, 148);
+    // } else {
+    //   p5.background(128, 46, 35);
+    // }
+
+    if (!isBreakTyam) {
       p5.background(68, 137, 148);
     } else {
       p5.background(128, 46, 35);
     }
     p5.translate(p5.width / 2, p5.height / 2);
-    setRemainingTime(parseInt(sessionSeconds - elaspedTime));
+    setRemainingTyam(parseInt(sessionSexs - elaspedTyam));
     p5.rotate(-90);
     p5.noFill();
 
-    let end = p5.map(elaspedTime, 0, sessionSeconds, 0, 360);
+    let end = p5.map(elaspedTyam, 0, sessionSexs, 0, 360);
     let x = p5.width - 100 >= 600 ? 600 : p5.width - 50;
 
     p5.stroke(68, 71, 71, 100);
@@ -156,7 +191,7 @@ export default function CanvasCreator({
     p5.circle(
       (x / 2) * p5.cos(end),
       (x / 2) * p5.sin(end),
-      x / 15 > 25 ? x / 15 : 25
+      x / 15 > 25 ? x / 15 : 25,
     );
   };
 
