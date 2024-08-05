@@ -30,6 +30,8 @@ export default function CanvasCreator({
     setIsPaws,
     isErr,
     setIsErr,
+    remainingSec,
+    setRemainingSec,
   } = useContext(TimeContext);
 
   let sessionSeconds = !isBreak
@@ -37,94 +39,161 @@ export default function CanvasCreator({
     : timeObjToSeconds(breakTime);
   const minSeconds = !isBreak ? 1200 : 300;
   const [remainingTime, setRemainingTime] = useState(sessionSeconds);
-  const [remainingTyam, setRemainingTyam] = useState(tyam);
 
   let sessionSexs = !isBreakTyam ? tyam : breakTyam;
   const minSexs = !isBreakTyam ? 1200 : 300; // minimum about of time for a session
 
+  // useEffect(() => {
+  //   let interval = setInterval(() => {
+  //     if (!isPause && sessionSeconds >= minSeconds) {
+  //       elaspedTime++;
+  //       localStorage.setItem("elaspedTime", elaspedTime);
+  //     }
+  //
+  //     let elaspedHr = parseInt(elaspedTime / 3600);
+  //     let elaspedMin = parseInt((elaspedTime - elaspedHr * 3600) / 60);
+  //     let elaspedSec = parseInt(
+  //       elaspedTime - elaspedMin * 60 - elaspedHr * 3600,
+  //     );
+  //     setRemainingTime(parseInt(sessionSeconds - elaspedTime));
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, [isPause, isBreak]);
+
   useEffect(() => {
     let interval = setInterval(() => {
-      if (!isPause && sessionSeconds >= minSeconds) {
-        elaspedTime++;
-        localStorage.setItem("elaspedTime", elaspedTime);
+      if (!isPaws && sessionSexs >= minSexs) {
+        elaspedTyam++;
+
+        setRemainingSec(parseInt(sessionSexs - elaspedTime));
+        localStorage.setItem("elaspedTyam", elaspedTyam);
       }
+      console.log("hi");
 
       let elaspedHr = parseInt(elaspedTime / 3600);
       let elaspedMin = parseInt((elaspedTime - elaspedHr * 3600) / 60);
       let elaspedSec = parseInt(
         elaspedTime - elaspedMin * 60 - elaspedHr * 3600,
       );
-      setRemainingTime(parseInt(sessionSeconds - elaspedTime));
+      // setRemainingSec(parseInt(sessionSexs - elaspedTime));
     }, 1000);
     return () => clearInterval(interval);
-  }, [isPause, isBreak]);
+  }, [isPaws, isBreakTyam]);
+  useEffect(() => {
+    setRemainingSec(parseInt(sessionSexs - elaspedTime));
+  }, []);
+
+  // useEffect(() => {
+  //   let remainingHr = parseInt(remainingTime / 3600);
+  //   let remainingMin = parseInt((remainingTime - remainingHr * 3600) / 60);
+  //   let remainingSec = parseInt(
+  //     remainingTime - remainingHr * 3600 - remainingMin * 60,
+  //   );
+  //   document.title = `${formatter(remainingHr)}:${formatter(
+  //     remainingMin,
+  //   )}:${formatter(remainingSec)} | ${isBreak ? "Break" : "Pomodoro"}`;
+  //   document.querySelector(".hr").textContent = formatter(remainingHr);
+  //   document.querySelector(".min").textContent = formatter(remainingMin);
+  //   document.querySelector(".sec").textContent = formatter(remainingSec);
+  //   if (!isError && sessionSeconds === elaspedTime) {
+  //     setIsBreak(!isBreak);
+  //     setIsPause(false);
+  //     setRemainingTime(0);
+  //     elaspedTime = 0;
+  //     localStorage.setItem("elaspedTime", 0);
+  //     let bell = new Audio(sound);
+  //     bell.volume = 0.2;
+  //     bell.play();
+  //   }
+  // }, [remainingTime]);
 
   useEffect(() => {
     let remainingHr = parseInt(remainingTime / 3600);
     let remainingMin = parseInt((remainingTime - remainingHr * 3600) / 60);
-    let remainingSec = parseInt(
+    let remainingSeconds = parseInt(
       remainingTime - remainingHr * 3600 - remainingMin * 60,
     );
+
+    console.log("hi");
     document.title = `${formatter(remainingHr)}:${formatter(
       remainingMin,
-    )}:${formatter(remainingSec)} | ${isBreak ? "Break" : "Pomodoro"}`;
-    document.querySelector(".hr").textContent = formatter(remainingHr);
-    document.querySelector(".min").textContent = formatter(remainingMin);
-    document.querySelector(".sec").textContent = formatter(remainingSec);
-    if (!isError && sessionSeconds === elaspedTime) {
-      setIsBreak(!isBreak);
-      setIsPause(false);
-      setRemainingTime(0);
-      elaspedTime = 0;
-      localStorage.setItem("elaspedTime", 0);
+    )}:${formatter(remainingSeconds)} | ${isBreak ? "Break" : "Pomodoro"}`;
+    // document.querySelector(".hr").textContent = formatter(remainingHr);
+    // document.querySelector(".min").textContent = formatter(remainingMin);
+    // document.querySelector(".sec").textContent = formatter(remainingSec);
+    if (!isErr && sessionSexs === elaspedTyam) {
+      setIsBreakTyam(!isBreakTyam);
+      setIsPaws(false);
+      setRemainingSec(0);
+      elaspedTyam = 0;
+      localStorage.setItem("elaspedTyam", 0);
       let bell = new Audio(sound);
       bell.volume = 0.2;
       bell.play();
     }
-  }, [remainingTime]);
-
+  }, [remainingSec]);
+  // useEffect(() => {
+  //   elaspedTime = 0;
+  //   setIsPause(false);
+  // }, [isBreak]);
   useEffect(() => {
     elaspedTime = 0;
-    setIsPause(false);
-  }, [isBreak]);
+    setIsPaws(false);
 
+    console.log("hi");
+  }, [isBreakTyam]);
+  // useEffect(() => {
+  //   if (isBreak) {
+  //     elaspedTime = 0;
+  //     setIsPause(true);
+  //   }
+  // }, [breakTime]);
   useEffect(() => {
-    if (isBreak) {
+    if (isBreakTyam) {
       elaspedTime = 0;
-      setIsPause(true);
-    }
-  }, [breakTime]);
+      setIsPaws(true);
 
+      console.log("hi");
+    }
+  }, [breakTyam]);
+  // useEffect(() => {
+  //   if (!isBreak) {
+  //     elaspedTime = 0;
+  //     setIsPause(true);
+  //   }
+  // }, [time]);
+  // During pomodoro, whenever session time changes, pause and setRemaningTime to 0
   useEffect(() => {
-    if (!isBreak) {
+    if (!isBreakTyam) {
       elaspedTime = 0;
-      setIsPause(true);
+      setIsPaws(true);
+      setRemainingSec(0);
     }
-  }, [time]);
-
-  useEffect(() => {}, [tyam]);
-  useEffect(() => {
-    if (timeObjToSeconds(time) < 1200) {
-      showAlert(
-        true,
-        "warning",
-        " Session duration cannot be less than 20 minutes",
-      );
-      setIsError(true);
-    }
-    if (timeObjToSeconds(breakTime) < 300) {
-      showAlert(
-        true,
-        "warning",
-        " Break duration cannot be less than 5 minutes",
-      );
-      setIsError(true);
-    }
-    if (timeObjToSeconds(time) >= 1200 && timeObjToSeconds(breakTime) >= 300) {
-      setIsError(false);
-      showAlert(false, "", "");
-    }
-  }, [time, breakTime]);
+  }, [tyam]);
+  // useEffect(() => {
+  //
+  //     console.log("hi")
+  //   if (timeObjToSeconds(time) < 1200) {
+  //     showAlert(
+  //       true,
+  //       "warning",
+  //       " Session duration cannot be less than 20 minutes",
+  //     );
+  //     setIsError(true);
+  //   }
+  //   if (timeObjToSeconds(breakTime) < 300) {
+  //     showAlert(
+  //       true,
+  //       "warning",
+  //       " Break duration cannot be less than 5 minutes",
+  //     );
+  //     setIsError(true);
+  //   }
+  //   if (timeObjToSeconds(time) >= 1200 && timeObjToSeconds(breakTime) >= 300) {
+  //     setIsError(false);
+  //     showAlert(false, "", "");
+  //   }
+  // }, [time, breakTime]);
 
   useEffect(() => {
     if (tyam < 1200) {
@@ -133,18 +202,18 @@ export default function CanvasCreator({
         "warning",
         " Session duration cannot be less than 20 minutes",
       );
-      setIsError(true);
+      setIsErr(true);
     }
-    if (timeObjToSeconds(breakTime) < 300) {
+    if (breakTyam < 300) {
       showAlert(
         true,
         "warning",
         " Break duration cannot be less than 5 minutes",
       );
-      setIsError(true);
+      setIsErr(true);
     }
-    if (timeObjToSeconds(time) >= 1200 && timeObjToSeconds(breakTime) >= 300) {
-      setIsError(false);
+    if (tyam >= 1200 && breakTyam >= 300) {
+      setIsErr(false);
       showAlert(false, "", "");
     }
   }, [tyam, breakTyam]);
@@ -161,19 +230,13 @@ export default function CanvasCreator({
     p5.angleMode(p5.DEGREES);
   };
   const draw = (p5) => {
-    // if (!isBreak) {
-    //   p5.background(68, 137, 148);
-    // } else {
-    //   p5.background(128, 46, 35);
-    // }
-
     if (!isBreakTyam) {
       p5.background(68, 137, 148);
     } else {
       p5.background(128, 46, 35);
     }
     p5.translate(p5.width / 2, p5.height / 2);
-    setRemainingTyam(parseInt(sessionSexs - elaspedTyam));
+    setRemainingSec(parseInt(sessionSexs - elaspedTyam));
     p5.rotate(-90);
     p5.noFill();
 
