@@ -64,8 +64,8 @@ export default function CanvasCreator({
     let interval = setInterval(() => {
       if (!isPaws && sessionSexs >= minSexs) {
         elaspedTyam++;
-
-        setRemainingSec(parseInt(sessionSexs - elaspedTime));
+        setRemainingSec(parseInt(sessionSexs - elaspedTyam));
+        console.log(":3", remainingSec);
         localStorage.setItem("elaspedTyam", elaspedTyam);
       }
       console.log("hi");
@@ -79,6 +79,7 @@ export default function CanvasCreator({
     }, 1000);
     return () => clearInterval(interval);
   }, [isPaws, isBreakTyam]);
+
   useEffect(() => {
     setRemainingSec(parseInt(sessionSexs - elaspedTime));
   }, []);
@@ -108,10 +109,10 @@ export default function CanvasCreator({
   // }, [remainingTime]);
 
   useEffect(() => {
-    let remainingHr = parseInt(remainingTime / 3600);
-    let remainingMin = parseInt((remainingTime - remainingHr * 3600) / 60);
+    let remainingHr = parseInt(remainingSec / 3600);
+    let remainingMin = parseInt((remainingSec - remainingHr * 3600) / 60);
     let remainingSeconds = parseInt(
-      remainingTime - remainingHr * 3600 - remainingMin * 60,
+      remainingSec - remainingHr * 3600 - remainingMin * 60,
     );
 
     console.log("hi");
@@ -138,9 +139,9 @@ export default function CanvasCreator({
   // }, [isBreak]);
   useEffect(() => {
     elaspedTime = 0;
+    elaspedTyam = 0;
     setIsPaws(false);
-
-    console.log("hi");
+    window.localStorage.setItem("elaspedTyam", 0);
   }, [isBreakTyam]);
   // useEffect(() => {
   //   if (isBreak) {
@@ -152,8 +153,6 @@ export default function CanvasCreator({
     if (isBreakTyam) {
       elaspedTime = 0;
       setIsPaws(true);
-
-      console.log("hi");
     }
   }, [breakTyam]);
   // useEffect(() => {
