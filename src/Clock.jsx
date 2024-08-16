@@ -6,25 +6,23 @@ import { TimeContext } from "./App";
 let elaspedTime = window.localStorage.getItem("elaspedTime") || 0;
 let elaspedTyam = window.localStorage.getItem("elaspedTyam") || 0;
 
-export default function CanvasCreator({
-  time,
-  breakTime,
-  isBreak,
-  isPause,
-  setIsPause,
-  setIsBreak,
-  showAlert,
-  isError,
-  setIsError,
-}) {
-  // let currentTimeObj = !isBreak ? time : breakTime;
-
+export default function CanvasCreator(
+  {
+    // time,
+    // breakTime,
+    // isBreak,
+    // isPause,
+    // setIsPause,
+    // setIsBreak,
+    // showAlert,
+    // isError,
+    // setIsError,
+  },
+) {
   const {
     tyam,
     breakTyam,
     isBreakTyam,
-    setBreakTyam,
-    setTyam,
     setIsBreakTyam,
     isPaws,
     setIsPaws,
@@ -32,13 +30,14 @@ export default function CanvasCreator({
     setIsErr,
     remainingSec,
     setRemainingSec,
+    showAlert,
   } = useContext(TimeContext);
 
-  let sessionSeconds = !isBreak
-    ? timeObjToSeconds(time)
-    : timeObjToSeconds(breakTime);
-  const minSeconds = !isBreak ? 1200 : 300;
-  const [remainingTime, setRemainingTime] = useState(sessionSeconds);
+  // let sessionSeconds = !isBreak
+  //   ? timeObjToSeconds(time)
+  //   : timeObjToSeconds(breakTime);
+  // const minSeconds = !isBreak ? 1200 : 300;
+  // const [remainingTime, setRemainingTime] = useState(sessionSeconds);
 
   let sessionSexs = !isBreakTyam ? tyam : breakTyam;
   const minSexs = !isBreakTyam ? 1200 : 300; // minimum about of time for a session
@@ -65,17 +64,14 @@ export default function CanvasCreator({
       if (!isPaws && sessionSexs >= minSexs) {
         elaspedTyam++;
         setRemainingSec(parseInt(sessionSexs - elaspedTyam));
-        console.log(":3", remainingSec);
         localStorage.setItem("elaspedTyam", elaspedTyam);
       }
-      console.log("hi");
 
       let elaspedHr = parseInt(elaspedTime / 3600);
       let elaspedMin = parseInt((elaspedTime - elaspedHr * 3600) / 60);
       let elaspedSec = parseInt(
         elaspedTime - elaspedMin * 60 - elaspedHr * 3600,
       );
-      // setRemainingSec(parseInt(sessionSexs - elaspedTime));
     }, 1000);
     return () => clearInterval(interval);
   }, [isPaws, isBreakTyam]);
@@ -109,6 +105,7 @@ export default function CanvasCreator({
   // }, [remainingTime]);
 
   useEffect(() => {
+    console.log(remainingSec);
     let remainingHr = parseInt(remainingSec / 3600);
     let remainingMin = parseInt((remainingSec - remainingHr * 3600) / 60);
     let remainingSeconds = parseInt(
@@ -118,7 +115,7 @@ export default function CanvasCreator({
     console.log("hi");
     document.title = `${formatter(remainingHr)}:${formatter(
       remainingMin,
-    )}:${formatter(remainingSeconds)} | ${isBreak ? "Break" : "Pomodoro"}`;
+    )}:${formatter(remainingSeconds)} | ${isBreakTyam ? "Break" : "Pomodoro"}`;
     // document.querySelector(".hr").textContent = formatter(remainingHr);
     // document.querySelector(".min").textContent = formatter(remainingMin);
     // document.querySelector(".sec").textContent = formatter(remainingSec);
@@ -166,7 +163,10 @@ export default function CanvasCreator({
     if (!isBreakTyam) {
       elaspedTime = 0;
       setIsPaws(true);
-      setRemainingSec(0);
+      // setRemainingSec(0);
+      //
+      // setRemainingSec(tyam);
+      window.localStorage.setItem("elaspedTyam", 0);
     }
   }, [tyam]);
   // useEffect(() => {
@@ -216,6 +216,7 @@ export default function CanvasCreator({
       showAlert(false, "", "");
     }
   }, [tyam, breakTyam]);
+
   const setup = (p5, canvasParentRef) => {
     if (p5.windowWidth >= 600) {
       let canvasHeight = (p5.windowHeight / 100) * 69;
@@ -228,6 +229,7 @@ export default function CanvasCreator({
     }
     p5.angleMode(p5.DEGREES);
   };
+
   const draw = (p5) => {
     if (!isBreakTyam) {
       p5.background(68, 137, 148);
@@ -235,7 +237,8 @@ export default function CanvasCreator({
       p5.background(128, 46, 35);
     }
     p5.translate(p5.width / 2, p5.height / 2);
-    setRemainingSec(parseInt(sessionSexs - elaspedTyam));
+    // setRemainingSec(parseInt(sessionSexs - elaspedTyam));
+    console.log(sessionSexs - elaspedTyam, "oi lado");
     p5.rotate(-90);
     p5.noFill();
 

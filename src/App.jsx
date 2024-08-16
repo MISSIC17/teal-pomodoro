@@ -50,12 +50,16 @@ function App() {
   const [tyam, setTyam] = useState(1200);
   const [breakTyam, setBreakTyam] = useState(600);
   const [isBreakTyam, setIsBreakTyam] = useState(false);
+
+  console.log(tyam, breakTyam);
   const [formattedSeconds, setFormattedSeconds] = useState(
     secToHHMMSS(!isBreakTyam ? tyam : breakTyam),
   );
   const [isPaws, setIsPaws] = useState(true);
   const [isErr, setIsErr] = useState(false);
-  const [remainingSec, setRemainingSec] = useState(tyam);
+  const [remainingSec, setRemainingSec] = useState(
+    !isBreakTyam ? tyam : breakTyam,
+  );
 
   window.mobileCheck = function () {
     let check = false;
@@ -115,6 +119,9 @@ function App() {
     setFormattedSeconds(secToHHMMSS(remainingSec));
     console.log(formattedSeconds, remainingSec);
   }, [remainingSec]);
+  useEffect(() => {
+    console.log(formattedSeconds);
+  }, [formattedSeconds]);
   return (
     <TimeContext.Provider
       value={{
@@ -130,6 +137,11 @@ function App() {
         setIsErr,
         remainingSec,
         setRemainingSec,
+        showAlert,
+        showSettings,
+        setShowSettings,
+        showHelp,
+        setShowHelp,
       }}
     >
       {alert.show && (
@@ -178,15 +190,15 @@ function App() {
         <div className="clock-section text-white relative grid place-items-center overflow-hidden">
           <div className="clock-circle-wrapper grid place-items-center">
             <CanvasCreator
-              time={time}
-              breakTime={breakTime}
-              isBreak={isBreak}
-              isPause={isPause}
-              setIsPause={setIsPause}
-              setIsBreak={setIsBreak}
-              showAlert={showAlert}
-              isError={isError}
-              setIsError={setIsError}
+            // time={time}
+            // breakTime={breakTime}
+            // isBreak={isBreak}
+            // isPause={isPause}
+            // setIsPause={setIsPause}
+            // setIsBreak={setIsBreak}
+            // showAlert={showAlert}
+            // isError={isError}
+            // setIsError={setIsError}
             />
           </div>
           <div className="clock-info-wrapper absolute left-1/2 top-1/2 h-1/2 flex justify-around items-center flex-col transform -translate-x-1/2 -translate-y-1/2">

@@ -8,6 +8,7 @@ export function secToHHMMSS(time) {
   const hr = parseInt(time / 3600) || 0;
   const min = parseInt((time - hr * 3600) / 60);
   const sec = parseInt(time - (hr * 3600 + min * 60));
+  console.log(time);
   return `${formatter(hr)}:${formatter(min)}:${formatter(sec)}`;
 }
 

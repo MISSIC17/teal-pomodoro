@@ -25,7 +25,7 @@ export default function Settings({
     setBreakTyam,
     setIsBreakTyam,
   } = useContext(TimeContext);
-  const UseOutsideAlerter = (ref) => {
+  const useOutsideAlerter = (ref) => {
     useEffect(() => {
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
@@ -39,7 +39,7 @@ export default function Settings({
     }, [ref]);
   };
   const settingsWrapper = useRef(null);
-  UseOutsideAlerter(settingsWrapper);
+  useOutsideAlerter(settingsWrapper);
   const [settingsPos, setSettingsPos] = useState({ right: "0", top: "0" });
   const types = ["hr", "min", "sec"];
   const defaultSessions = [
@@ -299,12 +299,7 @@ export default function Settings({
                 <DefaultSession
                   key={index}
                   id={`default-session-${index}`}
-                  time={defaultSession[0]}
-                  breakTime={defaultSession[1]}
-                  setTime={setTime}
-                  setBreakTime={setBreakTime}
-                  isBreak={isBreak}
-                  setIsBreak={setIsBreak}
+                  session={defaultSession}
                 />
               );
             })}
