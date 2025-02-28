@@ -51,7 +51,6 @@ function App() {
   const [breakTyam, setBreakTyam] = useState(600);
   const [isBreakTyam, setIsBreakTyam] = useState(false);
 
-  console.log(tyam, breakTyam);
   const [formattedSeconds, setFormattedSeconds] = useState(
     secToHHMMSS(!isBreakTyam ? tyam : breakTyam),
   );
@@ -117,7 +116,6 @@ function App() {
   }, [breakTime, time]);
   useEffect(() => {
     setFormattedSeconds(secToHHMMSS(remainingSec));
-    console.log(formattedSeconds, remainingSec);
   }, [remainingSec]);
   useEffect(() => {
     console.log(formattedSeconds);
@@ -189,17 +187,7 @@ function App() {
         </nav>
         <div className="clock-section text-white relative grid place-items-center overflow-hidden">
           <div className="clock-circle-wrapper grid place-items-center">
-            <CanvasCreator
-            // time={time}
-            // breakTime={breakTime}
-            // isBreak={isBreak}
-            // isPause={isPause}
-            // setIsPause={setIsPause}
-            // setIsBreak={setIsBreak}
-            // showAlert={showAlert}
-            // isError={isError}
-            // setIsError={setIsError}
-            />
+            <CanvasCreator />
           </div>
           <div className="clock-info-wrapper absolute left-1/2 top-1/2 h-1/2 flex justify-around items-center flex-col transform -translate-x-1/2 -translate-y-1/2">
             <div className="title-section transform -translate-y-1/2">
