@@ -1,8 +1,9 @@
-import "./styles/App.css";
 import "./styles/styles.css";
 import "./styles/responsive.css";
+import "./styles/App.css";
+import "./styles/clock.css";
 import React, { useState, useEffect, createContext } from "react";
-import CanvasCreator, { formatter } from "./Clock";
+import CanvasCreator, { formatter } from "./ClockCanvas";
 import Settings from "./Settings";
 import Help from "./Help";
 import Alert from "./Alert";
@@ -60,9 +61,9 @@ function App() {
     !isBreakTyam ? tyam : breakTyam,
   );
 
-  window.mobileCheck = function () {
+  window.mobileCheck = function() {
     let check = false;
-    (function (a) {
+    (function(a) {
       if (
         /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
           a,
@@ -159,9 +160,8 @@ function App() {
         />
       )}
       <main
-        className={`relative ${
-          !isBreakTyam ? "bg-teal" : "bg-brickred"
-        } h-[100vh] max-h-[100vh] sm:h-[100vh] w-full grid grid-rows-[10%_auto_10%] transition-all ease-linear duration-75`}
+        className={`relative ${!isBreakTyam ? "bg-teal" : "bg-brickred"
+          } h-[100vh] max-h-[100vh] sm:h-[100vh] w-full grid grid-rows-[10%_auto_10%] transition-all ease-linear duration-75`}
       >
         <nav className="flex justify-end pr-4 pt-3 gap-4">
           <Settings

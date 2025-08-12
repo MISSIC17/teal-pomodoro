@@ -3,13 +3,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Nova+Round&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Nova+Round&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Fragment+Mono:ital@0;1&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Nova+Round&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+
+:root {
+  --primary-color: 68, 137, 148;
+  --secondary-color: 128, 46, 35;
+  --bright-primary: 70, 188, 196;
+}
 *,
 *::before,
 *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* outline:1px solid red; */
+  user-select: none;
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -23,4 +30,30 @@ input[type="number"] {
   -moz-appearance: textfield;
   padding: 0.5em 0;
   font-size: 1.1em;
+}
+
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+input {
+  background-color: black;
+  color: white;
+  width: 3ch;
+  padding: 0.5ch;
+  caret-color: transparent;
+  text-align: center;
+}
+input:focus {
+  background-color: gray;
+  outline: none;
+}
+input[type="number"] {
+  font-family: "PT Mono", monospace;
+}
+canvas {
+  color: white;
 }

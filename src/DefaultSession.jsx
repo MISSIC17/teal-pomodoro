@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { formatter } from "./Clock";
+import { formatter } from "./ClockCanvas";
 import { TimeContext } from "./App";
 import { secondsToHrMinSec } from "./utils/helpers";
 export default function DefaultSession({ id, session }) {
@@ -23,9 +23,8 @@ export default function DefaultSession({ id, session }) {
   return (
     <section
       id={id}
-      className={`default-session relative py-6 px-3 grid justify-items-center justify-self-center rounded-lg ${
-        !isBreakTyam ? "bg-teal" : "bg-brickred"
-      } text-white cursor-pointer'} `}
+      className={`default-session relative py-6 px-3 grid justify-items-center justify-self-center rounded-lg ${!isBreakTyam ? "bg-teal" : "bg-brickred"
+        } text-white cursor-pointer'} `}
       onClick={handleClick}
     >
       <p>

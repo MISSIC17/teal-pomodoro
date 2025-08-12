@@ -1,25 +1,5 @@
-@media screen and (max-width: 1200px) {
-  .clock-info-wrapper .time-display {
-    font-size: 88px;
-    line-height: 106px;
-    font-size: clamp(2em, calc(3.5em + 0.5vw), 5em);
-  }
-  .control-icon{
-    height:3em;
-    width:3em;
-  }
-  
-}
+
 @media screen and (max-width: 600px) {
-  .clock-info-wrapper .time-display {
-    font-size: 88px;
-    font-size: clamp(2em, calc(3.5em + 0.5vw), 4.5em);
-    line-height: 106px;
-  }
-  .control-icon{
-    height:2.5em;
-    width:2.5em;
-  }
   .settings-options-wrapper{
     position: absolute;
     width:100vw;
@@ -51,16 +31,8 @@
 .alert{
   width:90%;
   padding:1em 1em;
+}
 
-}
-.button-display{
-  top:-1.25em;
-  
-}
-.button-display>button{
-  padding:0.8em 0.9em;
-  border-radius: 20px;
-}
 .alert{
   padding:1.5em 1em;
 }

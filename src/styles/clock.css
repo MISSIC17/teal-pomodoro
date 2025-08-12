@@ -1,0 +1,105 @@
+.clock-info-wrapper {
+  /*font-family: "Varela Round", sans-serif;*/
+  /* font-family: "Nova Round", system-ui; */
+  /* font-family: "IBM Plex Mono", monospace; */
+  /* font-family: "Fragment Mono", monospace; */
+ font-family: "DM Mono", monospace;
+  font-weight: 300;
+  font-style: normal;
+  font-weight: 500;
+}
+.clock-info-wrapper .title-section p {
+  font-size: clamp(1em, calc(1.2em + 1vw), 2em);
+  color: rgba(255 255 255 / 0.7);
+}
+
+
+  .clock-info-wrapper .time-display {
+    font-size: 88px;
+    font-size: clamp(2em, calc(3.5em + 0.5vw), 4.5em);
+    line-height: 106px;
+  }
+
+.clock-info-wrapper .tyam-display {
+  font-size: 88px;
+  line-height: 106px;
+  font-size: clamp(2.75em, calc(6em - 1vw), 5.5em);
+}
+
+.time > div::after,
+.break > div::after {
+  position: absolute;
+  bottom: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.time-hr::after,
+.break-hr::after {
+  content: "hr";
+  color: rgba(0, 0, 0, 0.7);
+}
+.time-min::after,
+.break-min::after {
+  content: "min";
+  color: rgba(0, 0, 0, 0.7);
+}
+.time-sec::after,
+.break-sec::after {
+  content: "sec";
+  color: rgba(0, 0, 0, 0.7);
+}
+
+
+
+
+  .control-icon{
+    height:2.5em;
+    width:2.5em;
+  }
+
+  .button-display{
+  top:-1.25em;
+  }
+  .button-display>button{
+  padding:0.8em 0.9em;
+  border-radius: 20px;
+  }
+@media screen and (min-width: 600px) {
+
+  .clock-info-wrapper .time-display {
+    font-size: 88px;
+    line-height: 106px;
+    font-size: clamp(2em, calc(3.5em + 0.5vw), 5em);
+  }
+
+  .control-icon{
+    height:3em;
+    width:3em;
+  }
+
+.button-display > button {
+  padding: 0.8em 1.2em;
+  background: white;
+  border-radius: 25px;
+  filter: drop-shadow(1px 5px 13px rgba(0, 0, 0, 0.65));
+}
+
+}
+
+@media screen and (min-width: 1200px) {
+.clock-info-wrapper .time-display {
+  font-size: 88px;
+  line-height: 106px;
+  font-size: clamp(2.75em, calc(6em - 1vw), 5.5em);
+}
+
+.control-icon {
+  height: 4em;
+  width: 4em;
+}
+
+}
+
+
+
