@@ -1,3 +1,8 @@
+/**
+ * Utility functions for formatting number to show a 2-digit format like "01", "02", etc.
+ * @param {number} digit - The number to format.
+ * @returns {string} - The formatted number as a string.
+ */
 export function formatter(digit) {
   if (digit.toString().length === 1) {
     return "0" + digit.toString();

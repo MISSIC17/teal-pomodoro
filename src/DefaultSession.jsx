@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { formatter } from "./ClockCanvas";
-import { TimeContext } from "./App";
+import { formatter } from "./Clock";
+import { AppContext } from "./App";
 import { secondsToHrMinSec } from "./utils/helpers";
 export default function DefaultSession({ id, session }) {
   const {
@@ -9,8 +9,7 @@ export default function DefaultSession({ id, session }) {
     setTyam,
     setIsBreakTyam,
     setRemainingSec,
-  } = useContext(TimeContext);
-  console.log(session);
+  } = useContext(AppContext);
   const sessionTime = session[0];
   const sessionBreakTime = session[1];
   const handleClick = () => {
@@ -23,8 +22,9 @@ export default function DefaultSession({ id, session }) {
   return (
     <section
       id={id}
-      className={`default-session relative py-6 px-3 grid justify-items-center justify-self-center rounded-lg ${!isBreakTyam ? "bg-teal" : "bg-brickred"
-        } text-white cursor-pointer'} `}
+      className={`default-session relative py-6 px-3 grid justify-items-center justify-self-center rounded-lg ${
+        !isBreakTyam ? "bg-teal" : "bg-brickred"
+      } text-white cursor-pointer'} `}
       onClick={handleClick}
     >
       <p>

@@ -5,7 +5,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosTimer } from "react-icons/io";
 import Field from "./Field";
 import DefaultSession from "./DefaultSession";
-import { TimeContext } from "./App";
+import { AppContext } from "./App";
 
 export default function Settings({
   time,
@@ -24,7 +24,7 @@ export default function Settings({
     setTyam,
     setBreakTyam,
     setIsBreakTyam,
-  } = useContext(TimeContext);
+  } = useContext(AppContext);
   const useOutsideAlerter = (ref) => {
     useEffect(() => {
       function handleClickOutside(event) {
@@ -187,7 +187,7 @@ export default function Settings({
     <>
       <div
         id="settings-wrapper"
-        className="settings-wrapper h-fit w-fit"
+        className="settings-wrapper h-fit w-fit font-sec"
         onClick={() => handleSettingsClick}
       >
         {!showSettings ? (
@@ -211,14 +211,14 @@ export default function Settings({
       <section
         ref={settingsWrapper}
         id="settings-options-wrapper"
-        className={`settings-options-wrapper  grid justify-items-center
+        className={`settings-options-wrapper  grid justify-items-center font-sec
       absolute right-[${settingsPos.right}px] top-[${settingsPos.top}px] ${
-        showSettings ? "" : "hidden"
-      } p-3 z-10 `}
+          showSettings ? "" : "hidden"
+        } p-3 z-10 `}
         style={{ right: `${settingsPos.right}px` }}
       >
         <div className="settings-title relative grid place-items-center lg:w-fit h-fit w-1/2 px-6 py-2 shadow-[0px_4px_11px_0px_black]">
-          <p className="lg:text-2xl lg:px-8 lg:py-2 text-xl px-6 py-1">
+          <p className="lg:text-2xl lg:px-8 lg:py-2 text-xl px-6 py-1 font-sec">
             Settings
           </p>
         </div>
@@ -280,7 +280,7 @@ export default function Settings({
         >
           <div
             id="default-sessions-title"
-            className={`grid relative text-center w-[90%] justify-self-center md:px-4 md:py-4 px-2 py-2 ${
+            className={`grid relative text-center w-[90%] justify-self-center md:px-4 md:py-4 px-2 py-2 font-sec ${
               !isBreak ? "bg-teal-3" : "bg-brickred"
             } shadow-[0px_4px_11px_0px_black]`}
           >
