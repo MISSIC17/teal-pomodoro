@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 
 import { BsFillPauseCircleFill as PauseIcon } from "react-icons/bs";
 import { IoPlaySkipForwardSharp as NextIcon } from "react-icons/io5";
@@ -8,6 +8,8 @@ import Sketch from "react-p5";
 import sound from "./assets/bell.mp3";
 import { timeObjToSeconds, formatter, secToHHMMSS } from "./utils/helpers";
 import { AppContext } from "./App";
+import { ReactP5Wrapper } from "@p5-wrapper/react";
+
 let elaspedTime = () =>
   Number(window?.localStorage?.getItem("elaspedTime")) || 0;
 let elaspedTyamCount = () =>
@@ -42,9 +44,12 @@ export function ClockSection() {
   return (
     <div
       id="clock-section"
-      className="clock-section text-white relative grid place-items-center overflow-hidden"
+      className="text-white relative grid place-items-center overflow-hidden"
     >
-      <div className="clock-circle-wrapper grid place-items-center">
+      <div
+        id="clock-circle-wrapper"
+        className="grid place-items-center relative h-full w-full overflow-hidden"
+      >
         <CanvasCreator />
       </div>
       <div className="clock-info-wrapper absolute left-1/2 top-1/2 h-1/2 flex justify-around items-center flex-col transform -translate-x-1/2 -translate-y-1/2">
@@ -90,6 +95,72 @@ export function ClockSection() {
       </div>
     </div>
   );
+}
+function sketch(p5) {
+  let isBreakTyam = false;
+  let elaspedTyam = 0;
+  let sessionDuration = 1;
+
+  const setCanvasSize = () => {
+    let canvasWidth, canvasHeight;
+    if (p5.windowWidth >= 600) {
+      canvasHeight = p5.windowHeight;
+      canvasWidth = canvasHeight; // square
+    } else {
+      canvasWidth = p5.windowWidth;
+      canvasHeight = p5.windowWidth;
+    }
+    return { canvasWidth, canvasHeight };
+  };
+
+  p5.setup = () => {
+    let { canvasWidth, canvasHeight } = setCanvasSize();
+    p5.createCanvas(canvasWidth, canvasHeight);
+    p5.angleMode(p5.DEGREES);
+  };
+
+  p5.windowResized = () => {
+    let { canvasWidth, canvasHeight } = setCanvasSize();
+    p5.resizeCanvas(canvasWidth, canvasHeight);
+  };
+
+  // 👇 react props update here
+  p5.updateWithProps = (props) => {
+    if (props.isBreakTyam !== undefined) isBreakTyam = props.isBreakTyam;
+    if (props.elaspedTyam !== undefined) elaspedTyam = props.elaspedTyam;
+    if (props.sessionDuration !== undefined)
+      sessionDuration = props.sessionDuration;
+  };
+
+  p5.draw = () => {
+    if (!isBreakTyam) {
+      p5.background(68, 137, 148);
+    } else {
+      p5.background(128, 46, 35);
+    }
+
+    p5.translate(p5.width / 2, p5.height / 2);
+    p5.rotate(-90);
+    p5.noFill();
+
+    let end = p5.map(elaspedTyam, 0, sessionDuration, 0, 360);
+    let x = p5.width - 100 >= 600 ? 600 : p5.width - 50;
+
+    p5.stroke(68, 71, 71, 100);
+    p5.arc(0, 0, x, x, 0, 360);
+
+    p5.stroke(255);
+    p5.strokeWeight(x / 40 > 10 ? x / 40 : 10);
+    p5.arc(0, 0, x, x, 0, end);
+
+    p5.fill(255);
+    p5.noStroke();
+    p5.circle(
+      (x / 2) * p5.cos(end),
+      (x / 2) * p5.sin(end),
+      x / 15 > 25 ? x / 15 : 25
+    );
+  };
 }
 
 function CanvasCreator() {
@@ -164,15 +235,15 @@ function CanvasCreator() {
     } else {
       setIsPaws(false);
     }
-  }, [isBreakTyam]);
+  }, [isBreakTyam, setIsPaws]);
 
-  useEffect(() => {
-    if (!isBreakTyam) {
-      setElaspedTyam(0);
-      setIsPaws(true);
-      window.localStorage.setItem("elaspedTyam", 0);
-    }
-  }, [tyam, isBreakTyam, setIsPaws]);
+  // useEffect(() => {
+  //   if (!isBreakTyam) {
+  //     setElaspedTyam(0);
+  //     setIsPaws(true);
+  //     window.localStorage.setItem("elaspedTyam", 0);
+  //   }
+  // }, [tyam, isBreakTyam, setIsPaws]);
 
   // useEffect(() => {
   //   elaspedTime = 0;
@@ -303,47 +374,12 @@ function CanvasCreator() {
     }
   }, [tyam, breakTyam, setIsErr, showAlert]);
 
-  const setup = (p5, canvasParentRef) => {
-    if (p5.windowWidth >= 600) {
-      let canvasHeight = (p5.windowHeight / 100) * 69;
-      let canvasWidth = canvasHeight;
-      p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
-    } else {
-      let canvasHeight = p5.windowWidth;
-      let canvasWidth = p5.windowWidth;
-      p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
-    }
-    p5.angleMode(p5.DEGREES);
-  };
-
-  const draw = (p5) => {
-    if (!isBreakTyam) {
-      p5.background(68, 137, 148);
-    } else {
-      p5.background(128, 46, 35);
-    }
-    p5.translate(p5.width / 2, p5.height / 2);
-    // setRemainingSec(parseInt(sessionDuration - elaspedTyam));
-    p5.rotate(-90);
-    p5.noFill();
-
-    let end = p5.map(elaspedTyam, 0, sessionDuration, 0, 360);
-    let x = p5.width - 100 >= 600 ? 600 : p5.width - 50;
-
-    p5.stroke(68, 71, 71, 100);
-    p5.arc(0, 0, x, x, 0, 360);
-    p5.stroke(255);
-    p5.strokeWeight(x / 40 > 10 ? x / 40 : 10);
-    p5.arc(0, 0, x, x, 0, end);
-    p5.stroke(255);
-    p5.fill(255);
-    p5.noStroke();
-    p5.circle(
-      (x / 2) * p5.cos(end),
-      (x / 2) * p5.sin(end),
-      x / 15 > 25 ? x / 15 : 25
-    );
-  };
-
-  return <Sketch setup={setup} draw={draw} />;
+  return (
+    <ReactP5Wrapper
+      sketch={sketch}
+      isBreakTyam={isBreakTyam}
+      elaspedTyam={elaspedTyam}
+      sessionDuration={sessionDuration}
+    />
+  );
 }

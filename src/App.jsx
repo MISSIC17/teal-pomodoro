@@ -143,7 +143,7 @@ function App() {
       <main
         className={`relative ${
           !isBreakTyam ? "bg-teal" : "bg-brickred"
-        } h-[100vh] max-h-[100vh] sm:h-[100vh] w-full grid grid-rows-[10%_auto_10%] transition-all ease-linear duration-75`}
+        } h-[100dvh] max-h-[100dvh] sm:h-[100dvh] w-full grid grid-rows-[10%_auto_10%] transition-all ease-linear duration-75`}
       >
         <nav className="flex justify-end pr-4 pt-3 gap-4">
           <Settings
